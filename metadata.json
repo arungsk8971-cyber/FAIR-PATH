@@ -1,0 +1,6 @@
+{
+  "name": "Intelligence Designed To Evolve",
+  "description": "AI-powered career evolution platform featuring smart resume scoring, automated job matching, application tracking, and skill-building courses.",
+  "requestFramePermissions": ["microphone", "clipboard-read", "clipboard-write"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

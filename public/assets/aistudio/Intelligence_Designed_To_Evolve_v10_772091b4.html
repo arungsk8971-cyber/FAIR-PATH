@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Intelligence Designed To Evolve</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Doto:wght@400&display=swap" rel="stylesheet">
+<style>:root{--bg:#000000;--text:#ffffff;--muted:#8e8e8e;--nav-text:#2e2e2e;--pill-dark:#28282a;--sign-in-text:#c8c8c8;--nav-shadow:0 4px 14px rgba(0,0,0,0.16);--trust-bg:#28282a;--trust-border:rgba(255,255,255,0.4);--trust-text:#c4c2c3;--font-sans:"Inter","Segoe UI",system-ui,sans-serif;--font-display:"Doto","Geist Pixel Circle",monospace;--ease:cubic-bezier(.22,1,.36,1);--h:clamp(44px,5.2vw,48px)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);overflow:hidden;height:100%;font-family:var(--font-sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+button,a,input{font:inherit;color:inherit}
+button,a{cursor:pointer;border:0;background:none;text-decoration:none}
+:focus-visible{outline:2px solid #fff;outline-offset:3px}
+[hidden]{display:none!important}
+.bg{position:absolute;inset:0;background:#000;overflow:hidden}
+.bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;z-index:0}
+.page{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;padding:clamp(16px,2.4vh,28px) clamp(14px,3vw,32px);height:100%;overflow:hidden}
+
+/* header */
+.header{position:relative;z-index:4;display:flex;align-items:center;justify-content:center;gap:clamp(18px,2.8vw,28px);width:100%;max-width:720px;flex-shrink:0;animation:slideDown .7s var(--ease) both}
+.logo{width:clamp(40px,4.4vw,46px);aspect-ratio:1;border-radius:50%;background:#fff;box-shadow:var(--nav-shadow);display:grid;place-items:center;transition:transform .3s var(--ease);flex-shrink:0}
+.logo img{width:72%;height:72%;object-fit:contain}
+.logo:hover{transform:scale(1.04)}
+.nav{flex:1;max-width:430px;height:var(--h);background:#fff;border-radius:999px;box-shadow:var(--nav-shadow);display:flex;justify-content:space-around;align-items:stretch;padding:4px 8px}
+.nav a{position:relative;display:flex;align-items:center;padding:0 10px;font-weight:500;font-size:clamp(13px,1.4vw,15px);letter-spacing:-.01em;color:var(--nav-text);opacity:.5;transition:opacity .2s}
+.nav a:hover{opacity:.75}
+.nav a.active{opacity:1}
+.nav a.active::after,.menu a.active::after{content:"";position:absolute;left:50%;bottom:5px;width:3px;height:3px;margin-left:-1.5px;border-radius:50%;background:#000;box-shadow:-5px 0 #000,5px 0 #000}
+.signin{height:var(--h);padding:0 22px;border-radius:999px;background:var(--pill-dark);color:var(--sign-in-text);font-weight:500;font-size:clamp(13px,1.4vw,15px);box-shadow:var(--nav-shadow);transition:background .2s,color .2s,transform .2s;white-space:nowrap}
+.signin:hover{background:#323234;color:#fff;transform:translateY(-1px)}
+.burger{display:none;position:relative;width:48px;height:48px;border-radius:50%;background:var(--pill-dark);transition:background .25s}
+.burger i{position:absolute;left:15px;width:18px;height:1.5px;background:#fff;top:23.25px;transition:transform .3s var(--ease),opacity .2s,background .2s}
+.burger i:nth-child(1){transform:translateY(-6.5px)}.burger i:nth-child(3){transform:translateY(6.5px)}
+body.menu-open .burger{background:#fff}
+body.menu-open .burger i{background:#000}
+body.menu-open .burger i:nth-child(1){transform:rotate(45deg)}
+body.menu-open .burger i:nth-child(2){opacity:0}
+body.menu-open .burger i:nth-child(3){transform:rotate(-45deg)}
+.overlay{position:fixed;inset:0;z-index:2;background:rgba(0,0,0,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:overlayIn .28s both}
+.menu{position:fixed;z-index:3;top:calc(clamp(16px,2.4vh,28px) + 48px + 14px);left:clamp(14px,3vw,32px);right:clamp(14px,3vw,32px);max-width:420px;margin:0 auto;background:#fff;border-radius:28px;padding:22px 18px 20px;box-shadow:0 20px 60px rgba(0,0,0,.45);display:flex;flex-direction:column;gap:6px;animation:menuIn .38s var(--ease) both}
+.menu a{position:relative;padding:14px 8px 20px;text-align:center;font-weight:500;color:var(--nav-text);opacity:.5;animation:linkIn .4s var(--ease) both}
+.menu a.active{opacity:1}
+.menu a.active::after{bottom:8px}
+.menu a:nth-child(2){animation-delay:.05s}.menu a:nth-child(3){animation-delay:.1s}.menu a:nth-child(4){animation-delay:.15s}
+.menu .signin{width:100%;margin-top:8px;animation:linkIn .4s .2s var(--ease) both}
+
+/* views */
+.view{position:relative;z-index:1;width:100%;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center}
+.hero{flex:1;min-height:0;width:100%;max-width:900px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.trust{--trust-size:clamp(36px,4.5vw,42px);display:inline-flex;align-items:center;margin-bottom:clamp(16px,2.5vh,26px)}
+.av{position:relative;width:var(--trust-size);height:var(--trust-size);border-radius:50%;background:var(--trust-bg);border:1px solid var(--trust-border);padding:5px;transition:transform .35s var(--ease);flex-shrink:0}
+.av+.av{margin-left:calc(var(--trust-size)*-.42)}
+.a1{z-index:1}.a2{z-index:2}.a3{z-index:4}
+.a1:hover{transform:translateY(-2px)}.a2:hover{transform:translateY(-4px)}.a3:hover{transform:translateY(-2px)}
+.av .in{width:100%;height:100%;border-radius:50%;background:#fff;color:#111;display:grid;place-items:center;font-size:calc(var(--trust-size)*.34)}
+.tpill{position:relative;z-index:3;height:var(--trust-size);display:flex;align-items:center;margin-left:calc(var(--trust-size)*-.42);padding:0 18px 0 calc(var(--trust-size)*.58);background:var(--trust-bg);border:1px solid var(--trust-border);border-radius:999px;color:var(--trust-text);font-weight:500;font-size:clamp(12px,1.4vw,13.5px);white-space:nowrap}
+.headline{font-family:var(--font-display);font-weight:400;font-size:clamp(28px,6.2vw,80px);letter-spacing:-.04em;line-height:1.12;color:#fff;white-space:nowrap;overflow:hidden;max-width:100%}
+.headline span{display:block;opacity:0;animation:headlineFade .85s var(--ease) forwards}
+.headline span:nth-child(1){animation-delay:.12s}.headline span:nth-child(2){animation-delay:.3s}
+.sub{max-width:min(500px,92%);margin:clamp(12px,2vh,18px) 0 clamp(18px,3vh,28px);font-size:clamp(calc(13.5px + 2pt),calc(1.55vw + 2pt),calc(16.5px + 2pt));color:#d0d0d0;line-height:1.55;font-weight:400}
+.cta{background:#fff;color:#000;font-weight:600;font-size:clamp(13.5px,1.5vw,14.5px);padding:clamp(11px,1.6vh,13px) clamp(22px,3vw,28px);border-radius:999px;box-shadow:0 0 0 1px rgba(255,255,255,.15),0 0 22px rgba(255,255,255,.32),0 0 44px rgba(255,255,255,.12);transition:transform .25s var(--ease),box-shadow .25s}
+.cta:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 0 0 1px rgba(255,255,255,.28),0 0 30px rgba(255,255,255,.5),0 0 60px rgba(255,255,255,.22)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;width:100%;max-width:1120px;flex-shrink:0;text-align:center;padding-top:8px}
+.ic{display:block;font-family:var(--font-display);font-size:clamp(22px,3vw,33px);line-height:1.1;color:#fff;margin-bottom:4px}
+.val{display:block;font-weight:500;font-size:clamp(18px,2.2vw,26px);letter-spacing:-.025em;font-variant-numeric:tabular-nums;color:#fff}
+.stat small{display:block;margin-top:2px;color:var(--muted);font-size:clamp(11px,1.2vw,12.5px)}
+
+/* entrance */
+.anim{opacity:0;transform:translateY(22px) scale(.98);filter:blur(6px);animation:reveal .85s var(--ease) forwards;animation-delay:var(--d,0s)}
+.anim.pulse{animation-name:revealPulse}
+@keyframes reveal{to{opacity:var(--o,1);transform:none;filter:blur(0)}}
+@keyframes revealPulse{60%{opacity:1;transform:translateY(0) scale(1.04);filter:blur(0)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:none}}
+@keyframes headlineFade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes overlayIn{from{opacity:0}}
+@keyframes menuIn{from{opacity:0;transform:translateY(-12px) scale(.97)}}
+@keyframes linkIn{from{opacity:0;transform:translateY(8px)}}
+
+/* app screens */
+.app{max-width:1120px;overflow-y:auto;padding:clamp(14px,3vh,28px) 0 8px;scrollbar-width:none;justify-content:flex-start}
+.app::-webkit-scrollbar{display:none}
+.panel{width:100%;background:rgba(14,14,16,.68);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.14);border-radius:24px;padding:clamp(18px,3vw,28px);margin-bottom:14px;animation:slideDown .5s var(--ease) both;flex-shrink:0}
+.narrow{max-width:420px;margin:auto}
+.h2{font-family:var(--font-display);font-weight:400;font-size:clamp(24px,4vw,36px);letter-spacing:-.03em;line-height:1.12;margin:2px 0 8px}
+h3{font-weight:600;font-size:15px;margin:18px 0 8px}
+.muted{color:var(--muted);font-size:14px;line-height:1.5}
+.note{margin-top:12px;color:#c4c2c3}
+.btn{display:inline-block;background:#fff;color:#000;font-weight:600;font-size:14px;padding:12px 24px;border-radius:999px;box-shadow:0 0 22px rgba(255,255,255,.18);transition:transform .2s,opacity .2s;text-align:center}
+.btn:hover:not(:disabled){transform:translateY(-1px)}
+.btn.dark{background:var(--pill-dark);color:var(--sign-in-text);box-shadow:none}
+.btn.sm{padding:9px 18px}
+.btn:disabled{opacity:.4;cursor:default}
+form{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+input[type=text],input[type=email],input[type=password],input:not([type]){background:var(--pill-dark);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:13px 20px;color:#fff;outline:0;font-size:14px}
+input:focus{border-color:rgba(255,255,255,.5)}
+.err{color:#ff8a80;font-size:13px;min-height:0}
+.sw{margin-top:14px;text-align:center}.sw a{color:#fff;text-decoration:underline}
+.drop{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:16px;padding:26px 16px;border:1px dashed rgba(255,255,255,.4);border-radius:20px;color:var(--trust-text);font-weight:500;cursor:pointer;transition:background .2s;text-align:center}
+.drop:hover{background:rgba(255,255,255,.06)}.drop .gi{font-size:22px;color:#fff}
+.row{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.bar{flex:1;max-width:260px;height:6px;border-radius:9px;background:var(--pill-dark);overflow:hidden}
+.bar i{display:block;height:100%;background:#fff;border-radius:9px;transition:width 1s var(--ease)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chips span{padding:6px 14px;border-radius:999px;background:var(--pill-dark);border:1px solid var(--trust-border);font-size:13px;color:var(--trust-text)}
+.sg{padding-left:18px;color:#d0d0d0;font-size:14px;line-height:1.7}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.opt{display:flex;flex-direction:column;gap:6px;text-align:left;padding:18px;border-radius:20px;background:var(--pill-dark);border:1px solid var(--trust-border);transition:background .2s,transform .2s}
+.opt:hover{background:#323234;transform:translateY(-2px)}
+.opt .gi{font-size:18px}.opt span{color:var(--muted);font-size:13px;line-height:1.45}
+.two .btn{width:100%}
+.job{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-top:1px solid rgba(255,255,255,.1)}
+.job:first-of-type{border-top:0}
+.job .r{display:flex;align-items:center;gap:14px}
+.pc{font-family:var(--font-display);font-size:22px;letter-spacing:-.03em}
+.steps{list-style:none;display:flex;justify-content:space-between;gap:6px;margin:20px 0 16px}
+.steps li{flex:1;text-align:center;font-size:12px;color:var(--muted)}
+.steps li::before{content:"";display:block;width:14px;height:14px;margin:0 auto 8px;border-radius:50%;border:1.5px solid var(--trust-border)}
+.steps .done{color:#fff}.steps .done::before{background:#fff;border-color:#fff}
+.steps .now{color:#fff}.steps .now::before{border-color:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.2)}
+.steps .fail{color:#ff8a80}.steps .fail::before{border-color:#ff8a80;background:#ff8a80}
+.stg{font-size:16px;line-height:1.5}
+
+@media (max-width:720px){
+  .nav,.header>.signin{display:none}
+  .header{justify-content:space-between}
+  .logo{width:48px}
+  .burger{display:block}
+  .stats{grid-template-columns:1fr 1fr;gap:12px 16px}
+  .headline{letter-spacing:-.08em;line-height:1.05}
+  .two{grid-template-columns:1fr}
+  .row{flex-direction:column;align-items:flex-start}.bar{width:100%;max-width:none}
+  .steps li{font-size:10.5px}
+}
+@media (max-width:420px){
+  .headline{letter-spacing:-.09em;line-height:1.04}
+  .trust{--trust-size:34px}.tpill{font-size:12px;padding-right:12px}
+}
+@media (max-height:700px){.trust{margin-bottom:12px}.sub{margin:10px 0 14px}.stat small{display:none}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .anim,.headline span{opacity:var(--o,1);transform:none;filter:none}
+}
+
+html{background:#000;color-scheme:dark;scroll-padding-top:env(safe-area-inset-top,0px)}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.gi{font-style:normal;font-weight:700}
+.header{max-width:780px}
+.gear{width:var(--h);aspect-ratio:1;border-radius:50%;background:var(--pill-dark);color:var(--sign-in-text);display:grid;place-items:center;box-shadow:var(--nav-shadow);transition:background .2s,color .2s,transform .2s;flex-shrink:0}
+.gear:hover,.gear.on{background:#fff;color:#000}
+.gear:hover{transform:translateY(-1px)}
+.subbar{width:100%;max-width:1120px;margin-top:12px;flex-shrink:0;position:relative;z-index:1}
+.partners{width:100%;max-width:1120px;flex-shrink:0;text-align:center;margin-bottom:clamp(8px,2vh,22px)}
+.partners p{color:var(--muted);font-size:12px;margin-bottom:10px}
+.mq{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+.track{display:flex;width:max-content;animation:mq 36s linear infinite}
+.track:hover{animation-play-state:paused}
+.track span{padding-right:clamp(32px,5vw,56px);font-weight:600;font-size:clamp(14px,1.8vw,18px);letter-spacing:-.02em;color:var(--trust-text);opacity:.7;transition:opacity .2s;white-space:nowrap}
+.track span:hover{opacity:1}
+@keyframes mq{to{transform:translateX(-50%)}}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,12px)}}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,0);z-index:5;background:#fff;color:#000;font-weight:500;font-size:14px;padding:11px 20px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.4);animation:toastIn .3s var(--ease) both}
+.seg{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.seg button{padding:8px 16px;border-radius:999px;background:var(--pill-dark);border:1px solid var(--trust-border);color:var(--trust-text);font-size:13px;transition:background .2s,color .2s}
+.seg button.on{background:#fff;color:#000;border-color:#fff}
+.seg .danger{color:#ff8a80}
+.roles{margin-top:14px;color:var(--muted);font-size:14px}.roles b{color:#fff;font-weight:500;display:inline-block}
+.sw{animation:wordIn .5s var(--ease)}@keyframes wordIn{from{opacity:0;transform:translateY(8px)}}
+.scan{height:4px;border-radius:9px;background:var(--pill-dark);overflow:hidden;margin-top:14px}.scan i{display:block;width:35%;height:100%;background:#fff;border-radius:9px;animation:sweep 1.1s ease-in-out infinite}@keyframes sweep{from{transform:translateX(-100%)}to{transform:translateX(300%)}}
+.ad{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;animation:adIn .6s var(--ease) both}@keyframes adIn{from{opacity:0;transform:translateX(16px)}}
+.tag{display:inline-block;padding:2px 10px;border-radius:999px;border:1px solid var(--trust-border);font-size:11px;color:var(--trust-text);margin-bottom:8px}
+.adn{display:block;font-family:var(--font-display);font-size:clamp(22px,3.4vw,30px);letter-spacing:-.03em;font-weight:400;margin-bottom:4px}
+.cf{position:fixed;top:-12px;width:var(--s);height:var(--s);border-radius:50%;background:#fff;z-index:7;pointer-events:none;animation:fall linear forwards}@keyframes fall{to{transform:translate(var(--x),105vh);opacity:.2}}
+.eyes{display:flex;gap:6px}.eyes i{width:6px;height:10px;border-radius:50%;background:#000;animation:blink 4.5s infinite}.eyes i:nth-child(2){animation-delay:.05s}@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+.cb-fab{position:fixed;right:clamp(14px,2vw,24px);bottom:calc(clamp(14px,2vw,24px) + env(safe-area-inset-bottom,0px));z-index:6;width:58px;height:58px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 0 0 1px rgba(255,255,255,.15),0 0 22px rgba(255,255,255,.32),0 6px 20px rgba(0,0,0,.4);transition:transform .25s var(--ease)}
+.cb-fab:hover{transform:scale(1.06) translateY(-2px)}
+.cb-fab::after{content:"";position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(255,255,255,.55);animation:ring 2.6s ease-out infinite}@keyframes ring{from{transform:scale(1);opacity:.8}to{transform:scale(1.6);opacity:0}}
+.cb{position:fixed;z-index:6;right:clamp(14px,2vw,24px);bottom:calc(clamp(14px,2vw,24px) + 74px + env(safe-area-inset-bottom,0px));width:min(380px,calc(100vw - 28px));height:min(520px,calc(100% - 150px));display:flex;flex-direction:column;background:rgba(14,14,16,.84);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.16);border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.5);transform-origin:bottom right;animation:cbIn .38s var(--ease) both;overflow:hidden}
+@keyframes cbIn{from{opacity:0;transform:translateY(16px) scale(.92)}}
+.cb-h{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.1)}.cb-h div{flex:1}.cb-h b{display:block;font-size:15px}.cb-h small{color:var(--muted);font-size:12px}
+.cb-h button{width:32px;height:32px;border-radius:50%;background:var(--pill-dark);font-size:18px;line-height:1}
+.cb-av{width:36px;height:36px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.cb-m{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scrollbar-width:none}
+.cm{max-width:86%;padding:10px 14px;border-radius:18px;font-size:14px;line-height:1.45;animation:msgIn .35s var(--ease) both}
+.cm.b{align-self:flex-start;background:var(--pill-dark);color:#e6e6e6;border-bottom-left-radius:6px}
+.cm.u{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:6px}
+.ty{display:flex;gap:5px;padding:14px}.ty span{width:6px;height:6px;border-radius:50%;background:#c4c2c3;animation:dot 1s infinite}.ty span:nth-child(2){animation-delay:.15s}.ty span:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-5px);opacity:1}}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px) scale(.97)}}
+.cb-q{display:flex;gap:8px;flex-wrap:wrap;padding:0 16px 10px}
+.cb-q button{padding:7px 14px;border-radius:999px;background:var(--pill-dark);border:1px solid var(--trust-border);color:var(--trust-text);font-size:13px;animation:msgIn .35s var(--ease) both;transition:background .2s,color .2s}.cb-q button:hover{background:#fff;color:#000}
+.cb-f{flex-direction:row;margin:0;padding:12px;border-top:1px solid rgba(255,255,255,.1)}.cb-f input{flex:1;min-width:0}
+@media(max-height:700px){.roles{display:none}}
+.subbar{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.app:not([hidden]){animation:viewIn .5s var(--ease) both}@keyframes viewIn{from{opacity:0;transform:translateY(14px)}}
+.app .panel:nth-child(2){animation-delay:.07s}.app .panel:nth-child(3){animation-delay:.14s}.app .panel:nth-child(4){animation-delay:.21s}
+.btn:active:not(:disabled){transform:scale(.96)}
+.job{padding:14px 8px;border-radius:12px;transition:background .25s;animation:linkIn .45s var(--ease) both}.job:hover{background:rgba(255,255,255,.04)}.job:nth-child(3n+2){animation-delay:.05s}.job:nth-child(3n){animation-delay:.1s}
+.logo img{transition:transform .5s var(--ease)}.logo:hover img{transform:rotate(15deg)}
+.bar i{transform-origin:left;animation:grow 1.1s var(--ease) both}@keyframes grow{from{transform:scaleX(0)}}
+.bar.wide{max-width:none;margin-top:14px}
+@keyframes pulseDot{from{box-shadow:0 0 0 0 rgba(255,255,255,.45)}to{box-shadow:0 0 0 10px rgba(255,255,255,0)}}
+@keyframes popDot{from{transform:scale(.4)}}
+.steps .now::before{animation:pulseDot 1.6s ease-out infinite}.steps .done::before{animation:popDot .4s var(--ease)}
+.seg button.on{animation:popDot .3s var(--ease)}
+.cb-fab{animation:fabIn .6s 1.2s var(--ease) backwards}@keyframes fabIn{from{opacity:0;transform:scale(.3)}}
+.tl{list-style:none;margin:18px 0 14px}
+.tl li{position:relative;padding:0 0 18px 30px;color:var(--muted);animation:linkIn .45s var(--ease) both;animation-delay:calc(var(--i,0)*.07s)}
+.tl li::before{content:"";position:absolute;left:0;top:3px;width:14px;height:14px;border-radius:50%;border:1.5px solid var(--trust-border);background:#000}
+.tl li::after{content:"";position:absolute;left:6.5px;top:19px;bottom:-3px;width:1.5px;background:rgba(255,255,255,.18)}
+.tl li:last-child::after{display:none}
+.tl li b{display:block;font-weight:600;font-size:14px;color:#c4c2c3}.tl li span{font-size:13px;line-height:1.45}
+.tl .done{color:#d0d0d0}.tl .done::before{background:#fff;border-color:#fff;animation:popDot .4s var(--ease) both}.tl .done::after{background:#fff}
+.tl .now b{color:#fff}.tl .now::before{border-color:#fff;animation:pulseDot 1.6s ease-out infinite}
+.adg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:14px}
+.adc{display:flex;flex-direction:column;gap:6px;padding:16px;border-radius:18px;background:var(--pill-dark);border:1px solid var(--trust-border);transition:transform .25s var(--ease),background .2s;animation:linkIn .45s var(--ease) both}
+.adc:hover{transform:translateY(-3px);background:#323234}.adc .tag{align-self:flex-start;margin:0}.adc b{font-size:16px}
+.lnk{color:#fff;font-size:13px;font-weight:500;text-decoration:underline;margin-top:auto;padding-top:6px}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid rgba(255,255,255,.1);font-size:14px}
+.kv span:first-child{color:var(--muted)}
+@media(max-width:720px){.header>.gear{display:none}}
+@media(max-height:700px){.partners p{display:none}}
+@media(prefers-reduced-motion:reduce){.track{flex-wrap:wrap;width:100%;justify-content:center}.track .dup{display:none}}
+.cl{display:inline-grid;place-items:center;flex-shrink:0;border-radius:50%;background:#fff;color:#000;font-family:var(--font-sans);font-weight:700;letter-spacing:-.04em;box-shadow:var(--nav-shadow);overflow:hidden}.cl img{width:72%;height:72%;object-fit:contain}.track span{display:inline-flex;align-items:center;gap:10px}.jl{display:flex;align-items:center;gap:12px;min-width:0}.track .cl{display:inline-grid;padding:0}
+.lang{height:var(--h);padding:0 34px 0 18px;border-radius:999px;border:0;background:var(--pill-dark) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' stroke='%23c8c8c8' stroke-width='1.6'%3E%3Cpath d='M1 1l4 4 4-4'/%3E%3C/svg%3E") no-repeat right 14px center;color:var(--sign-in-text);font:500 clamp(13px,1.4vw,15px) var(--font-sans);box-shadow:var(--nav-shadow);-webkit-appearance:none;appearance:none;cursor:pointer;transition:background-color .2s,color .2s}.lang:hover{background-color:#323234;color:#fff}.lang option{color:#000;background:#fff}.menu .lang{width:100%;margin-top:8px}.av .in{background:#fff;display:grid;place-items:center;overflow:hidden}.av .in img,.av .in svg{width:62%;height:62%;object-fit:contain}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}@keyframes pop{from{opacity:0;transform:scale(.55)}}@keyframes air{0%{box-shadow:0 0 0 0 rgba(255,255,255,.55)}100%{box-shadow:0 0 0 16px rgba(255,255,255,0)}}@keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}@keyframes bob{50%{translate:0 -3px}}@keyframes drift{50%{translate:0 -5px}}@keyframes look{0%,38%,100%{translate:0 0}46%,56%{translate:-2px 0}66%,86%{translate:2px 0}}@keyframes wave{0%,100%{rotate:0deg}20%{rotate:-14deg}45%{rotate:12deg}70%{rotate:-6deg}}@keyframes wfade{from{opacity:0;filter:blur(3px)}}@keyframes tipIn{from{opacity:0;transform:translateY(8px) scale(.9)}}
+.chips span,.sg li{animation:rise .45s var(--ease) calc(var(--i,0)*.05s) backwards}.chips span:nth-child(2),.sg li:nth-child(2){--i:1}.chips span:nth-child(3),.sg li:nth-child(3){--i:2}.chips span:nth-child(4),.sg li:nth-child(4){--i:3}.chips span:nth-child(5),.sg li:nth-child(5){--i:4}.chips span:nth-child(n+6),.sg li:nth-child(n+6){--i:5}
+#v-jobs .cl{animation:pop .5s var(--ease) backwards;transition:transform .3s var(--ease)}#v-jobs .job:hover .cl{transform:scale(1.12) rotate(-6deg)}
+.btn:active:not(:disabled),.seg button:active,.cta:active{transform:scale(.97)}.seg button{transition:transform .2s,background .2s,color .2s}.seg button:hover{transform:translateY(-1px)}.seg button.air{animation:air 1.2s ease-out infinite}
+.panel{transition:border-color .3s,box-shadow .3s}.panel:hover{border-color:rgba(255,255,255,.28);box-shadow:0 0 28px rgba(255,255,255,.06)}
+.bar i{background:linear-gradient(90deg,#fff 0,#9a9a9a 50%,#fff 100%);background-size:200% 100%;animation:grow 1.1s var(--ease) both,shimmer 3s linear 1.2s infinite}
+.live{display:inline-block;width:7px;height:7px;border-radius:50%;background:#fff;margin-right:8px;animation:air 1.6s ease-out infinite}
+.trust .av{animation:bob 3.4s ease-in-out infinite}.trust .a2{animation-delay:.4s}.trust .a3{animation-delay:.8s}
+.cb-fab{animation:fabIn .6s 1.2s var(--ease) backwards,drift 4.2s ease-in-out 2s infinite}.eyes{animation:look 7s ease-in-out 1s infinite}.cb-av{animation:wave 1s var(--ease) .45s}
+.cm.b .w{animation:wfade .35s var(--ease) backwards}.cb-q button:nth-child(2){animation-delay:.06s}.cb-q button:nth-child(3){animation-delay:.12s}.cb-q button:nth-child(4){animation-delay:.18s}.cb-q button:nth-child(5){animation-delay:.24s}
+.cb-f input{transition:box-shadow .2s}.cb-f input:focus{box-shadow:0 0 0 2px rgba(255,255,255,.22)}.cb-f button{transition:transform .15s}.cb-f button:active{transform:scale(.9)}
+.cb-tip{position:fixed;z-index:6;right:clamp(14px,2vw,24px);bottom:calc(clamp(14px,2vw,24px) + 74px + env(safe-area-inset-bottom,0px));background:#fff;color:#000;font-weight:500;font-size:13px;padding:9px 16px;border-radius:16px 16px 4px 16px;box-shadow:0 8px 24px rgba(0,0,0,.4);cursor:pointer;animation:tipIn .45s var(--ease) backwards,drift 3.6s ease-in-out .5s infinite}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.ck-top{display:flex;align-items:center;gap:14px}.ck-top .tt{flex:1;min-width:0}.ck-top .tt b{display:block;font-size:17px;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ck-top .tt span{color:var(--muted);font-size:13px}
+.ck-pill{padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid var(--trust-border);color:var(--trust-text);white-space:nowrap}.ck-pill.ok{background:#fff;color:#000;border-color:#fff}
+.ck-stats{display:grid;grid-template-columns:auto 1fr 1fr;gap:12px;align-items:center;margin:20px 0 22px}.ck-ring .rg{animation:ringfill 1.2s var(--ease) backwards}@keyframes ringfill{from{stroke-dashoffset:213.6}}
+.ck-tile{background:var(--pill-dark);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:14px}.ck-tile b{display:block;font-family:var(--font-display);font-size:24px;letter-spacing:-.03em}.ck-tile small{color:var(--muted);font-size:11px}
+.ck-line{list-style:none;margin:0 0 6px 8px;padding:0}.ck-line li{position:relative;padding:0 0 20px 34px}.ck-line li:last-child{padding-bottom:0}.ck-line li::after{content:"";position:absolute;left:7px;top:20px;bottom:2px;width:2px;background:rgba(255,255,255,.14)}.ck-line li:last-child::after{display:none}.ck-line li.done::after{background:#fff}
+.ck-line .nd{position:absolute;left:0;top:1px;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--trust-border);display:grid;place-items:center;font-size:9px;font-weight:700;color:#000;background:var(--bg)}.ck-line .done .nd{background:#fff;border-color:#fff}.ck-line .nd.now{border-color:#fff;animation:air 1.6s ease-out infinite}.ck-line .x .nd{border-color:var(--muted);color:var(--muted)}
+.ck-line .rw2{display:flex;justify-content:space-between;gap:10px;font-size:14px;font-weight:600}.ck-line .rw2 small{color:var(--muted);font-weight:400;font-size:12px}.ck-line p{color:var(--muted);font-size:13px;margin-top:2px}.ck-still,.ck-still :not(.now){animation:none!important}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:18px}
+.cc{position:relative;display:flex;flex-direction:column;gap:12px;padding:18px;border-radius:22px;border:1px solid rgba(255,255,255,.12);animation:rise .55s var(--ease) calc(var(--i,0)*45ms) backwards;transition:border-color .3s,box-shadow .3s}.cc:hover{border-color:rgba(255,255,255,.4);box-shadow:0 14px 40px rgba(0,0,0,.5),0 0 30px rgba(255,255,255,.07)}.cc.on{border-color:rgba(255,255,255,.55)}
+.cc-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.cc-b{width:52px;height:52px;box-shadow:0 0 0 5px rgba(255,255,255,.08),0 8px 22px rgba(0,0,0,.45);transition:transform .35s var(--ease)}.cc:hover .cc-b{transform:scale(1.08) rotate(-6deg)}.cc .tag{margin:0}
+.cc b{font-size:16px;letter-spacing:-.02em;line-height:1.25}.cc-m{display:flex;gap:14px;color:var(--muted);font-size:12px}.cc-m span:first-child::before{content:"◷ ";color:#fff}.cc-m span:last-child::before{content:"✓ ";color:#fff}.cc .btn{margin-top:auto;width:100%}
+.panel,.cc{background:radial-gradient(420px circle at var(--mx,-500px) var(--my,-500px),rgba(255,255,255,.09),transparent 60%),rgba(14,14,16,.68)}
+.panel .h2{background:linear-gradient(180deg,#fff 35%,#8a8a8a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+::selection{background:#fff;color:#000}*{scrollbar-width:thin;scrollbar-color:#3a3a3d transparent}.job:hover{box-shadow:inset 2px 0 0 rgba(255,255,255,.7)}
+.btn{position:relative;overflow:hidden}.btn::after{content:"";position:absolute;top:0;left:-70%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(140,140,140,.4),transparent);transform:skewX(-20deg);transition:left .7s var(--ease);pointer-events:none}.btn:hover::after{left:140%}
+@keyframes aurora{from{transform:translate(-3%,-2%) scale(1)}to{transform:translate(3%,2%) scale(1.08)}}.aur{position:fixed;inset:-15%;z-index:0;pointer-events:none;background:radial-gradient(520px 360px at 14% 18%,rgba(255,255,255,.06),transparent 70%),radial-gradient(480px 340px at 86% 78%,rgba(150,160,255,.08),transparent 70%);animation:aurora 16s ease-in-out infinite alternate}
+
+.sc-hl{animation:scHl 1.6s ease-out}@keyframes scHl{0%{box-shadow:0 0 0 0 rgba(255,255,255,.4)}100%{box-shadow:0 0 0 22px rgba(255,255,255,0)}}
+.sc-v{display:inline-block;margin-top:6px;padding:3px 12px;border-radius:999px;background:#fff;color:#000;font-size:12px;font-weight:600;opacity:0;transform:scale(.7);transition:opacity .4s,transform .5s var(--ease)}.sc-v.on{opacity:1;transform:none}
+.chips.pop span{opacity:0;transform:translateY(8px) scale(.9)}.chips.pop.on span{opacity:1;transform:none;transition:opacity .4s,transform .45s var(--ease);transition-delay:calc(var(--k)*70ms)}
+.mdl{position:fixed;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.74);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);animation:overlayIn .28s both}
+.mdl .box{width:min(480px,100%);max-height:88vh;overflow-y:auto;background:#0e0e10;border:1px solid rgba(255,255,255,.18);border-radius:24px;padding:24px;animation:slideDown .4s var(--ease) both}
+.mdl h3{margin:16px 0 0;font-size:15px;font-weight:600}
+.qo{display:block;width:100%;text-align:left;margin-top:8px;padding:11px 16px;border-radius:14px;background:var(--pill-dark);border:1px solid var(--trust-border);color:var(--trust-text);font-size:14px;transition:background .2s,color .2s}.qo.sel{background:#fff;color:#000}
+.mdl textarea{width:100%;min-height:130px;margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--pill-dark);border:1px solid var(--trust-border);color:#fff;font:inherit;font-size:14px;resize:vertical}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.cg{text-align:center}.cg .bd{width:92px;height:92px;margin:4px auto 18px;border-radius:50%;background:#fff;display:grid;place-items:center;animation:bdIn .7s var(--ease) both,bdGlow 2.2s .7s ease-out infinite}
+.cg path{stroke-dasharray:40;stroke-dashoffset:40;animation:draw .6s .45s ease-out forwards}.cg h2,.cg p{animation:slideDown .6s .6s var(--ease) both}
+@keyframes bdIn{from{transform:scale(.2);opacity:0}}@keyframes draw{to{stroke-dashoffset:0}}@keyframes bdGlow{0%{box-shadow:0 0 0 0 rgba(255,255,255,.45)}100%{box-shadow:0 0 0 34px rgba(255,255,255,0)}}
+.earned .gi{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#fff;color:#000;margin-right:6px;animation:bdGlow 2.2s ease-out infinite}
+
+/* learning steps: instant one-click advance */
+#v-learn.adv .panel,#v-learn.adv .tl li{animation:none}
+#v-learn.adv .tl li::before{animation:none}
+#v-learn.adv .tl li.now::before{animation:pulseDot 1.6s ease-out infinite}
+#v-learn.adv .bar i{animation:shimmer 3s linear infinite;transition:width .6s var(--ease)}
+#v-learn.adv .tl li.fx{animation:stepSlide .5s var(--ease) both}
+#v-learn.adv .tl li.fx::before{animation:stepPop .6s var(--ease) both}
+#v-learn.adv .tl li.fx::after{transform-origin:top;animation:lineGrow .5s .1s var(--ease) both}
+#v-learn.adv .tl li.fx b{animation:stepFlash .9s ease-out}
+#v-learn.adv .tl li.now{animation:stepIn .45s .15s var(--ease) both}
+@keyframes stepSlide{from{opacity:.4;transform:translateX(-10px)}}
+@keyframes stepIn{from{opacity:.5;transform:translateX(10px)}}
+@keyframes stepPop{0%{transform:scale(.3)}55%{transform:scale(1.7);box-shadow:0 0 0 10px rgba(255,255,255,.28)}100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+@keyframes lineGrow{from{transform:scaleY(0)}}
+@keyframes stepFlash{0%{color:#fff;text-shadow:0 0 14px rgba(255,255,255,.9)}100%{text-shadow:0 0 0 rgba(255,255,255,0)}}
+
+/* ===== v5: readability, purchased courses, intro ===== */
+/* soft scrim keeps the video from fighting the content on every inner page */
+.bg::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.72),rgba(0,0,0,.6) 45%,rgba(0,0,0,.78));opacity:0;transition:opacity .6s var(--ease)}
+body[data-v]:not([data-v=home]) .bg::after{opacity:1}
+.panel,.cc{background:radial-gradient(420px circle at var(--mx,-500px) var(--my,-500px),rgba(255,255,255,.08),transparent 60%),rgba(12,12,14,.9)}
+.aur{z-index:0}
+.app{padding-bottom:clamp(96px,14vh,120px)}
+.app>.panel:last-child{margin-bottom:0}
+.cb-tip{max-width:min(240px,calc(100vw - 100px))}
+.tag.pd{background:#fff;color:#000;border-color:#fff;font-weight:600}
+/* purchased */
+.pur .row{align-items:flex-start}
+.pur .pc{font-size:34px;line-height:1}
+.pur-list{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.pr{display:flex;align-items:center;gap:16px;padding:14px;border-radius:20px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);animation:rise .55s var(--ease) calc(var(--i,0)*70ms) backwards;transition:border-color .3s,transform .3s var(--ease),background .3s}
+.pr:hover{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.06);transform:translateY(-2px)}
+.pr.ok{border-color:rgba(255,255,255,.5)}
+.pr .cc-b{flex-shrink:0}
+.pr-i{flex:1;min-width:0}
+.pr-i b{display:block;font-size:15px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pr-i p{font-size:12.5px;margin:3px 0 9px}
+.pr-i .bar{max-width:none;height:5px}
+.pr-i .bar i{transition:width 1.1s var(--ease) .15s}
+.pr-r{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+.pr-r .pc{font-size:18px}
+.pur-empty{display:flex;align-items:center;gap:14px;margin-top:16px;padding:16px;border-radius:18px;border:1px dashed rgba(255,255,255,.22)}
+.pur-empty .gi{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#fff;color:#000;font-weight:700;flex-shrink:0}
+@media(max-width:560px){.pr{flex-wrap:wrap}.pr-i{flex-basis:calc(100% - 72px)}.pr-r{flex-direction:row;width:100%;justify-content:space-between;align-items:center}}
+@media(max-width:720px){.pur>.row>.pc{display:none}}
+/* intro */
+#splash{position:fixed;inset:0;z-index:50;background:#000;display:grid;place-items:center;transition:opacity .6s var(--ease),visibility .6s,transform .7s var(--ease)}
+#splash.out{opacity:0;visibility:hidden;transform:scale(1.06)}
+.sp-in{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px}
+.sp-logo{position:relative;width:96px;height:96px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 0 60px rgba(255,255,255,.28);animation:spLogo 1s var(--ease) .1s both,spFloat 2.4s ease-in-out 1.1s infinite}
+.sp-logo img{width:72%;height:72%;object-fit:contain;animation:spSpin 1.4s var(--ease) .1s both}
+.sp-ring{position:absolute;left:50%;top:48px;width:96px;height:96px;margin:-48px 0 0 -48px;border-radius:50%;border:1.5px solid rgba(255,255,255,.55);opacity:0;animation:spRing 1.8s cubic-bezier(.2,.7,.3,1) .5s infinite}
+.sp-ring.r2{animation-delay:1.1s}
+.sp-t{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:#c4c2c3;animation:spText .8s var(--ease) .75s both}
+.sp-t em{font-style:normal;color:#fff}
+.sp-bar{width:120px;height:2px;border-radius:2px;background:rgba(255,255,255,.14);overflow:hidden;animation:spText .6s var(--ease) .9s both}
+.sp-bar i{display:block;height:100%;width:100%;background:#fff;transform-origin:left;animation:spLoad 1.3s cubic-bezier(.65,0,.35,1) .9s both}
+@keyframes spLogo{from{opacity:0;transform:scale(.3) rotate(-120deg);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+@keyframes spSpin{from{transform:rotate(90deg) scale(.6)}to{transform:none}}
+@keyframes spFloat{50%{transform:translateY(-6px)}}
+@keyframes spRing{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(3.2)}}
+@keyframes spText{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes spLoad{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+/* header logo lands after the intro */
+body.intro:not(.ready) .header .logo{opacity:0;transform:scale(.6)}
+body.ready .header .logo{animation:logoLand .7s var(--ease) both}
+@keyframes logoLand{from{opacity:0;transform:scale(.6) rotate(-90deg)}to{opacity:1;transform:none}}
+@media(max-width:420px){.sp-t{font-size:11px;letter-spacing:.16em;text-align:center}}
+
+/* ===== v6: header buttons, home sections, ratings, footer, auth ===== */
+/* menu + settings buttons visible on every screen size */
+.burger{display:block}
+.header{max-width:1120px}
+@media(max-width:1000px){.nav,.header>.signin{display:none}.header{justify-content:space-between}}
+@media(max-width:720px){.header>.gear{display:grid}}
+.burger:hover{background:#323234}.gear,.burger{box-shadow:var(--nav-shadow)}
+.burger{flex-shrink:0}
+.menu{max-height:calc(100dvh - 120px);overflow-y:auto;scrollbar-width:none}
+.menu .mfoot{display:flex;justify-content:center;flex-wrap:wrap;gap:4px 16px;margin-top:10px;padding-top:14px;border-top:1px solid rgba(0,0,0,.1)}
+.menu .mfoot button{font-size:12.5px;color:var(--nav-text);opacity:.6;padding:4px 2px;transition:opacity .2s}.menu .mfoot button:hover{opacity:1}
+.menu .mcopy{text-align:center;font-size:11.5px;color:var(--nav-text);opacity:.45;margin-top:6px}
+.menu .signin,.menu .lang{animation:linkIn .4s .25s var(--ease) both}
+/* home scrolls: first screen is unchanged, new sections follow */
+#v-home{overflow-y:auto;overflow-x:hidden;scrollbar-width:none;scroll-behavior:smooth;justify-content:flex-start}
+#v-home::-webkit-scrollbar{display:none}
+.fold{width:100%;min-height:100%;display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.fold .hero{flex:1 0 auto}
+.cue{display:inline-flex;align-items:center;gap:6px;margin:4px 0 6px;padding:6px 14px;border-radius:999px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);transition:color .2s}
+.cue:hover{color:#fff}.cue svg{animation:cueB 1.8s ease-in-out infinite}
+@keyframes cueB{50%{transform:translateY(4px)}}
+#reviews{width:100%;max-width:1120px;padding-top:8px}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.shown{opacity:1;transform:none}
+/* carousel (circle visual + next arrow) */
+.rv{display:grid;grid-template-columns:1.15fr 1fr;gap:28px;align-items:center;padding:clamp(22px,4vw,40px)}
+.rv-txt .tag{margin-bottom:16px}
+.rv-txt #rvq{min-height:150px}
+.qt{font-size:clamp(20px,2.6vw,28px);line-height:1.25;letter-spacing:-.02em}
+.rv-by{margin-top:16px;color:var(--muted);font-size:14px}.rv-by b{color:#fff;font-weight:600}
+.chip{font-style:normal;margin-left:6px;padding:2px 8px;border-radius:999px;border:1px solid var(--trust-border);font-size:11px;color:var(--trust-text)}
+#rvq,#rvo{transition:opacity .22s,transform .22s var(--ease)}
+#rvq.out{opacity:0;transform:translateX(-14px)}#rvo.out{opacity:0;transform:scale(.92)}
+#rvq.in{animation:rvIn .5s var(--ease)}#rvo.in{animation:rvOrb .55s var(--ease)}
+@keyframes rvIn{from{opacity:0;transform:translateX(16px)}}@keyframes rvOrb{from{opacity:0;transform:scale(.9) rotate(-6deg)}}
+.rv-dots{display:flex;gap:8px;margin-top:18px}
+.rv-dots button{width:8px;height:8px;border-radius:99px;background:rgba(255,255,255,.22);transition:width .35s var(--ease),background .3s}
+.rv-dots button.on{width:26px;background:#fff}
+.rv-vis{display:flex;align-items:center;justify-content:center;gap:18px}
+.rv-orb{position:relative;width:clamp(210px,26vw,270px);aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:radial-gradient(circle at 30% 22%,#3a3a3d,#0b0b0c 70%);border:1px solid rgba(255,255,255,.2);box-shadow:0 0 60px rgba(255,255,255,.07),inset 0 0 40px rgba(0,0,0,.6)}
+.o-ring{position:absolute;inset:10px;border-radius:50%;border:1.5px dashed rgba(255,255,255,.25);animation:orbSpin 28s linear infinite}
+@keyframes orbSpin{to{transform:rotate(360deg)}}
+.o-av{display:grid;place-items:center;width:68px;height:68px;border-radius:50%;background:#fff;color:#000;font-family:var(--font-display);font-size:30px;box-shadow:0 0 0 6px rgba(255,255,255,.1)}
+.o-sc{font-family:var(--font-display);font-size:36px;font-weight:400;letter-spacing:-.03em;line-height:1;margin-top:6px}
+.rv-next{width:50px;height:50px;border-radius:50%;background:var(--pill-dark);color:#fff;display:grid;place-items:center;flex-shrink:0;box-shadow:var(--nav-shadow);transition:background .25s,color .25s,transform .25s var(--ease)}
+.rv-next:hover{background:#fff;color:#000;transform:translateX(3px)}
+/* stars */
+.stars{display:inline-flex;gap:3px}.stars i{display:block;width:16px;height:16px}
+.stars svg{width:100%;height:100%;fill:rgba(255,255,255,.16)}.stars i.on svg{fill:#fff}
+/* ratings summary + form */
+.rt{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,4vw,44px);padding:clamp(22px,4vw,36px)}
+.rt-sum{display:flex;align-items:center;gap:clamp(16px,3vw,28px)}
+.rt-big{display:flex;flex-direction:column;align-items:flex-start;gap:8px;flex-shrink:0}
+.rt-big .rt-n{font-family:var(--font-display);font-size:clamp(46px,6vw,64px);font-weight:400;line-height:.9}
+.rt-big small{color:var(--muted);font-size:12px;max-width:150px;line-height:1.35}
+.rt-bars{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.rt-r{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)}
+.rt-r span{width:10px}.rt-r em{font-style:normal;width:34px;text-align:right;font-variant-numeric:tabular-nums}
+.rt-r .bar{flex:1;max-width:none;height:5px}.rt-r .bar i{transition:width 1.1s var(--ease) .2s}
+.rt-form h3{font-size:17px}.rt-form .muted{margin:4px 0 14px;font-size:13.5px}
+.rt-in{display:flex;gap:6px;margin-bottom:12px}
+.rt-in button{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--pill-dark);border:1px solid rgba(255,255,255,.14);transition:transform .2s var(--ease),background .2s}
+.rt-in button svg{width:20px;height:20px;fill:none;stroke:#c8c8c8;stroke-width:1.6;stroke-linejoin:round;transition:fill .2s,stroke .2s}
+.rt-in button.on svg{fill:#fff;stroke:#fff}.rt-in button:hover{transform:translateY(-2px) scale(1.06)}
+.rt-in button.pop{animation:popDot .45s var(--ease)}
+.rt-form textarea{width:100%;min-height:74px;padding:12px 14px;border-radius:16px;background:var(--pill-dark);border:1px solid rgba(255,255,255,.14);color:#fff;font:inherit;font-size:14px;resize:vertical;outline:0;margin-bottom:12px}
+.rt-form textarea:focus{border-color:rgba(255,255,255,.5)}
+.rt-form .btn:disabled{opacity:.4;cursor:not-allowed}
+/* footer */
+.ft{width:100%;max-width:1120px;margin-top:34px;flex-shrink:0}
+.ft-g{display:grid;grid-template-columns:1.5fr repeat(4,1fr);gap:28px;padding:34px 6px 30px;border-top:1px solid rgba(255,255,255,.12)}
+.ft-b{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.ft-logo,.fb-logo{display:grid;place-items:center;border-radius:50%;background:#fff;flex-shrink:0}
+.ft-logo{width:44px;height:44px}.ft-logo img{width:72%;height:72%;object-fit:contain}
+.fb-logo{width:24px;height:24px}.fb-logo img{width:70%;height:70%;object-fit:contain}
+.ft-b b{font-size:15px;letter-spacing:-.01em}.ft-b p{font-size:13px;line-height:1.55;color:var(--muted);max-width:240px}
+.ft-g h4{font-size:13px;font-weight:600;letter-spacing:.02em;margin-bottom:12px}
+.ft-g button,.fb-n button,.au-t button,.menu .mfoot button{text-align:left}
+.ft-g>div:not(.ft-b){display:flex;flex-direction:column;align-items:flex-start;gap:9px}
+.ft-g button{font-size:13.5px;color:var(--muted);transition:color .2s,transform .2s var(--ease)}.ft-g button:hover{color:#fff;transform:translateX(3px)}
+.fb{display:flex;align-items:center;justify-content:space-between;gap:14px 22px;flex-wrap:wrap;padding:16px 6px 22px;border-top:1px solid rgba(255,255,255,.12);font-size:12.5px;color:var(--muted)}
+.fb-l{display:flex;align-items:center;gap:10px}
+.fb-n{display:flex;flex-wrap:wrap;gap:6px 16px}
+.fb-n button{font-size:12.5px;color:var(--muted);transition:color .2s}.fb-n button:hover{color:#fff;text-decoration:underline}
+.fb .lang{height:34px;padding:0 30px 0 14px;font-size:12.5px;background-position:right 12px center}
+.app{padding-bottom:clamp(64px,10vh,84px)}
+/* auth: provider buttons */
+.au{max-width:440px}
+.ob-list{display:flex;flex-direction:column;gap:12px;margin:22px 0 4px}
+.ob{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;height:52px;border-radius:999px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.02);font-weight:600;font-size:15px;color:#fff;transition:transform .25s var(--ease),background .25s,border-color .25s,box-shadow .25s}
+.ob:hover{transform:translateY(-2px);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.6)}
+.ob.g{background:#fff;color:#000;border-color:#fff;box-shadow:0 0 22px rgba(255,255,255,.18)}.ob.g:hover{background:#f1f1f1;box-shadow:0 0 30px rgba(255,255,255,.3)}
+.ob:active{transform:scale(.98)}
+.efw{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .5s var(--ease),opacity .4s var(--ease)}
+.efw.open{grid-template-rows:1fr;opacity:1}
+.efi{overflow:hidden;min-height:0}
+.efi form{padding-top:16px}
+.au-t{margin-top:18px;text-align:center;font-size:12.5px;line-height:1.6;color:var(--muted)}
+.au-t button{font-size:inherit;color:#fff;font-weight:600;text-decoration:underline;text-underline-offset:2px}
+/* responsive */
+@media(max-width:820px){.rv,.rt{grid-template-columns:1fr}.rv-vis{order:-1}.rv-txt #rvq{min-height:0}.ft-g{grid-template-columns:1fr 1fr 1fr}.ft-b{grid-column:1/-1}}
+@media(max-width:560px){.rt-sum{flex-direction:column;align-items:stretch}.ft-g{grid-template-columns:1fr 1fr}.fb{flex-direction:column;align-items:flex-start}.rt-in button{width:38px;height:38px}}
+
+/* full-width pages and split sign-in */
+#v-auth{justify-content:center}
+.au-wrap{width:100%;min-height:min(560px,100%);display:grid;grid-template-columns:1.05fr 1fr;gap:14px;align-items:stretch}
+.au-wrap .panel{margin-bottom:0;max-width:none}
+.au-i{display:flex;flex-direction:column;justify-content:center}
+.au-i .tag{align-self:flex-start;margin-bottom:14px}
+.au-i .h2{font-size:clamp(26px,3.2vw,38px);line-height:1.12}
+.au-l{list-style:none;margin-top:22px;display:flex;flex-direction:column;gap:14px}
+.au-l li{display:flex;align-items:center;gap:12px;font-size:15px;color:#d8d8d8;animation:rise .55s var(--ease) calc(var(--i)*80ms + .2s) backwards}
+.au-l .gi{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#fff;color:#000;font-size:13px;font-weight:700;flex-shrink:0}
+@media(max-width:860px){.au-wrap{grid-template-columns:1fr}.au-i{display:none}}
+
+/* sign-in illustration */
+.au-wrap{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(16px,4vw,56px);align-items:center}
+.au-wrap>.au{margin:0}
+.au .h2{font-size:clamp(30px,3.4vw,44px);line-height:1.1}
+.au-art{display:grid;place-items:center;min-width:0}
+.au-art svg{width:100%;max-width:520px;height:auto;overflow:visible;filter:drop-shadow(0 20px 50px rgba(0,0,0,.5));animation:rise .8s var(--ease) .1s backwards}
+.au-art .fl{animation:illF 5.5s ease-in-out infinite}.au-art .fl.b{animation-delay:-1.6s}.au-art .fl.c{animation-delay:-3s}.au-art .fl.d{animation-delay:-4.2s}
+@keyframes illF{50%{transform:translateY(-9px)}}
+.au-art .wag{transform-box:fill-box;transform-origin:0 100%;animation:wag 2.4s ease-in-out infinite}
+@keyframes wag{50%{transform:rotate(-14deg)}}
+.au-art .glow{animation:glw 3.4s ease-in-out infinite}@keyframes glw{50%{opacity:.5}}
+.au-art .bob{animation:illB 3.2s ease-in-out infinite;transform-box:fill-box}@keyframes illB{50%{transform:translateY(-3px)}}
+.au-art .spk{animation:glw 2.6s ease-in-out infinite}
+@media(max-width:860px){.au-art{display:none}}
+
+/* sign-in: cleaner, open layout like a landing page */
+.au-wrap>.au{background:none;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;padding:0 clamp(0px,1vw,12px)}
+.au-wrap>.au:hover{border:0;box-shadow:none}
+.au .h2{font-size:clamp(28px,3.3vw,46px);line-height:1.08;letter-spacing:-.03em;max-width:560px}
+.au>.muted:first-of-type{margin-top:12px;font-size:15px}
+.ob-list{margin-top:28px;max-width:440px}
+.ob{height:54px}
+.au-t,.au .sw{max-width:440px;text-align:left}
+.au .sw{margin-top:22px;font-size:15px}
+.au-tr{list-style:none;display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:26px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);max-width:440px}
+.au-tr li{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+.au-tr svg{color:#fff;flex-shrink:0}
+.au-art svg{max-width:560px}
+.efi form{max-width:440px}
+@media(max-width:860px){.au-wrap{grid-template-columns:minmax(0,1fr)}.au-wrap>.au{padding:0 2px}.ob-list,.au-t,.au .sw,.au-tr,.efi form{max-width:none}}
+</style>
+</head>
+<body>
+<div id="splash" aria-hidden="true"><div class="sp-in"><span class="sp-ring"></span><span class="sp-ring r2"></span><div class="sp-logo"></div><p class="sp-t">Intelligence <em>Designed</em> To Evolve</p><span class="sp-bar"><i></i></span></div></div>
+<div class="bg">
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260809_012548_ef22562c-c0ae-4816-ad9d-f8922af4e6a7.mp4" type="video/mp4">
+  </video>
+</div>
+
+<div class="page">
+  <header class="header">
+    <button class="logo" data-go="home" aria-label="Home"><img src="data:image/webp;base64,UklGRuIAAABXRUJQVlA4WAoAAAAQAAAAMwAAMwAAQUxQSI0AAAABDzD/ERHCUSTbbTTOR0MQFBFzgiYoH4KOm98mBTOI6L+BtG06Bc9dcHJhB+CiDkBywCF5wCQB0R9q4DLx6ODRECd4gc2wQ3Dg4XAcDvCEGdgIE7CkWYfjgnVh/8vEhdhENbHJdFF3vqgmk3Wm/C04LqVzE4NEJPFJtBK7RDJxzSibpMwHQHKZ70DYqR0AVlA4IC4AAACQAwCdASo0ADQAPm02mEkkIyKhIggAgA2JaQAAEDdTUAV4hbkAAP77nMAAAAAA" alt="" width="52" height="52"></button>
+    <nav class="nav" aria-label="Main">
+      <a href="#" data-go="home" class="active">Home</a>
+      <a href="#" data-go="bot">Resume Bot</a>
+      <a href="#" data-go="jobs">Jobs</a>
+      <a href="#" data-go="courses">Courses</a>
+    </nav>
+    <select class="lang" aria-label="Language"><option value="en">English</option><option value="hi">हिंदी</option><option value="ta">தமிழ்</option><option value="kn">ಕನ್ನಡ</option></select>
+    <button class="signin">Sign in</button>
+    <button class="gear" data-go="settings" aria-label="Settings" title="Settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></button>
+    <button class="burger" id="burger" aria-expanded="false" aria-label="Menu"><i></i><i></i><i></i></button>
+  </header>
+
+  <div class="overlay" hidden></div>
+  <div class="menu" hidden>
+    <a href="#" data-go="home" class="active">Home</a>
+    <a href="#" data-go="bot">Resume Bot</a>
+    <a href="#" data-go="jobs">Jobs</a>
+    <a href="#" data-go="courses">Courses</a>
+    <a href="#" data-go="learn" id="mlearn" hidden>My learning</a>
+    <a href="#" data-go="settings" id="mset">Settings</a>
+    <select class="lang" aria-label="Language"><option value="en">English</option><option value="hi">हिंदी</option><option value="ta">தமிழ்</option><option value="kn">ಕನ್ನಡ</option></select>
+    <button class="signin">Sign in</button>
+    <div class="mfoot"><button data-sc="reviews">Rate us</button><button data-i="privacy">Privacy</button><button data-i="terms">Terms</button><button data-i="help">Help</button></div>
+    <p class="mcopy" id="mcopy"></p>
+  </div>
+
+  <div class="subbar" id="subbar" hidden><button class="btn dark sm" data-back>← Back</button><button class="btn dark sm" data-go="learn">My learning</button></div>
+  <div class="view" id="v-home">
+   <div class="fold">
+    <section class="hero">
+      <div class="trust anim" style="--d:.05s">
+        <span class="av a1"><span class="in"><span class="gi">M</span></span></span>
+        <span class="av a2"><span class="in"><span class="gi">a</span></span></span>
+        <span class="av a3"><span class="in"><span class="gi">G</span></span></span>
+        <span class="tpill">Trusted by 2000+ Enterprises</span>
+      </div>
+      <h1 class="headline anim-h"><span>Intelligence</span><span>Designed To Evolve</span></h1>
+      <p class="sub anim" style="--d:.28s;--o:.8">Upload your resume and our AI bot scans it, matches real jobs, applies for you and stays with you until you’re hired.</p>
+      <div class="anim pulse" style="--d:.4s"><button class="cta" data-go="bot">Get Started</button></div>
+      <p class="roles anim" style="--d:.5s">Jobs for <b id="rw" class="sw">developers</b></p>
+    </section>
+    <section class="partners anim" style="--d:.46s" aria-label="Hiring partners"><p>In partnership with leading hiring teams</p><div class="mq"><div class="track" id="track"></div></div></section>
+    <section class="stats">
+      <div class="stat anim" style="--d:.5s"><span class="ic">&lt;</span><b class="val" data-t="120" data-d="0" data-s="ms">0ms</b><small>Resume Scan Time</small></div>
+      <div class="stat anim" style="--d:.58s"><span class="ic">%</span><b class="val" data-t="99.99" data-d="2" data-s="%">0.00%</b><small>Platform Uptime</small></div>
+      <div class="stat anim" style="--d:.66s"><span class="ic">*</span><b class="val" data-t="24" data-d="0" data-s="/7">0/7</b><small>Auto-Apply Bot</small></div>
+      <div class="stat anim" style="--d:.74s"><span class="ic">#</span><b class="val" data-t="2.4" data-d="1" data-s="M">0.0M</b><small>Jobs Matched</small></div>
+    </section>
+    <button class="cue" data-sc="reviews" aria-label="See ratings and more"><span>Ratings</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+   </div>
+   <section id="reviews" aria-label="Ratings and reviews"></section>
+   <footer class="ft" id="ft"></footer>
+  </div>
+
+  <section class="view app" id="v-auth" hidden></section>
+  <section class="view app" id="v-bot" hidden></section>
+  <section class="view app" id="v-jobs" hidden></section>
+  <section class="view app" id="v-track" hidden></section>
+  <section class="view app" id="v-courses" hidden></section>
+  <section class="view app" id="v-settings" hidden></section>
+  <section class="view app" id="v-learn" hidden></section>
+</div>
+<script>const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)],sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const MEM={};const LS={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return k in MEM?JSON.parse(MEM[k]):null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){MEM[k]=JSON.stringify(v)}},del(k){try{localStorage.removeItem(k)}catch(e){delete MEM[k]}}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const cap=s=>s[0].toUpperCase()+s.slice(1);
+
+/* sample data (replace with your jobs API) */
+const SK=['javascript','typescript','react','node','python','sql','java','aws','docker','git','html','css','figma','photoshop','excel','seo','sales','communication','teaching','mathematics','physics','lesson planning','classroom management','public speaking','english','nursing','patient care','first aid','lab testing','biology','accounting','tally','gst','negotiation','customer service','operations','project management','autocad','recruitment','content writing','social media'];
+const JOBS=[
+ {id:1,co:'Google',role:'Frontend Engineer',loc:'Bengaluru',sk:['javascript','react','typescript','css']},
+ {id:2,co:'Microsoft',role:'Cloud Developer',loc:'Hyderabad',sk:['docker','python','git','sql']},
+ {id:3,co:'Amazon',role:'Backend Engineer',loc:'Bengaluru',sk:['java','sql','aws','git']},
+ {id:4,co:'Flipkart',role:'Full-Stack Developer',loc:'Bengaluru',sk:['node','react','sql','javascript']},
+ {id:5,co:'Razorpay',role:'Data Analyst',loc:'Remote',sk:['python','sql','excel','communication']},
+ {id:6,co:'Infosys',role:'Software Engineer',loc:'Pune',sk:['java','html','css','git']}];
+const STG=['Received','Screened','Reviewed','Decided','Placed'];
+
+/* state */
+const D={get skills(){return[]},get applied(){return[]},get enrolled(){return[]},get prog(){return{}},get vr(){return{}},demo:0,score:0,mode:null,job:null,stage:-1,out:null,want:null};
+const PD={loc:'Any',field:'All'};
+let S={user:null,...D,pref:{...PD}},authMode='in',timer;
+const save=()=>S.user&&LS.set('rb_s_'+S.user.email,{...S,user:null});
+const J=id=>JOBS.find(j=>j.id===id);
+const pct=j=>Math.round(40+60*j.sk.filter(s=>S.skills.includes(s)).length/j.sk.length);
+const matches=()=>{const fl=S.pref.field||'All',L=JOBS.filter(j=>(S.pref.loc==='Any'||j.loc===S.pref.loc||j.loc==='Remote')&&(fl==='All'||j.f===fl)).map(j=>({...j,p:pct(j)})),g=L.filter(j=>j.p>40);return(g.length>=3?g:L).sort((a,b)=>b.p-a.p)};
+const missing=js=>{const c={};js.forEach(j=>j.sk.forEach(s=>S.skills.includes(s)||(c[s]=(c[s]||0)+1)));return Object.entries(c).sort((a,b)=>b[1]-a[1])};
+
+/* routing */
+const R={auth:()=>vAuth(),bot:()=>vBot(),jobs:()=>vJobs(),track:()=>vTrack(),courses:()=>vCourses(),settings:()=>vSettings(),learn:()=>vLearn()};
+let cur='home',hist=[];
+const ui=on=>{$$('.signin').forEach(b=>b.textContent=on?'Sign out':'Sign in');$('#mlearn').hidden=!on};
+function go(v,back){
+  if(!S.user&&v!=='home')v='auth';
+  if(v==='home')hist=[];else if(!back&&cur!==v&&cur!=='auth')hist.push(cur);
+  $$('.view').forEach(x=>x.hidden=x.id!=='v-'+v);
+  const n=v==='track'?'jobs':v==='learn'?'courses':v;
+  $$('a[data-go]').forEach(a=>a.classList.toggle('active',a.dataset.go===n));
+  cur=v;document.body.dataset.v=v;$('#subbar').hidden=v==='home';$('.gear').classList.toggle('on',v==='settings');R[v]&&R[v]();closeMenu();
+  const el=$('#v-'+v);if(el)el.scrollTop=0;
+}
+
+/* auth (demo: localStorage only — swap for a real backend) */
+
+/* cartoon scene for the sign-in page (original illustration, monochrome to match the theme) */
+const AUART=`<svg viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="">
+<defs><radialGradient id="aG" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient><linearGradient id="aB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".1"/><stop offset="1" stop-color="#fff" stop-opacity=".02"/></linearGradient></defs>
+<circle cx="260" cy="260" r="236" fill="url(#aB)" stroke="rgba(255,255,255,.14)"/>
+<circle cx="260" cy="260" r="210" fill="none" stroke="rgba(255,255,255,.08)" stroke-dasharray="3 9"/>
+<ellipse cx="270" cy="474" rx="200" ry="13" fill="rgba(0,0,0,.55)"/>
+<!-- bookshelf -->
+<rect x="250" y="62" width="232" height="300" rx="14" fill="#0e0e10" stroke="#46464c" stroke-width="2"/>
+<path d="M366 62V362M250 162H482M250 262H482" stroke="#46464c" stroke-width="2"/>
+<g><circle cx="307" cy="116" r="27" fill="#2b2b30" stroke="#d8d8dc" stroke-width="2"/><ellipse cx="307" cy="116" rx="11" ry="27" fill="none" stroke="#8e8e94" stroke-width="1.5"/><path d="M280 116h54M287 100h40M287 132h40" stroke="#8e8e94" stroke-width="1.5"/><path d="M307 143v9" stroke="#d8d8dc" stroke-width="3"/><rect x="291" y="151" width="32" height="7" rx="3" fill="#d8d8dc"/></g>
+<g><path class="wag" d="M446 158c26 2 28-22 14-30" fill="none" stroke="#e8e8ea" stroke-width="7" stroke-linecap="round"/><ellipse cx="422" cy="140" rx="21" ry="20" fill="#e8e8ea"/><circle cx="422" cy="110" r="14" fill="#e8e8ea"/><path d="M410 100l-2-14 12 8zM434 100l2-14-12 8z" fill="#e8e8ea"/><circle cx="417" cy="110" r="2" fill="#000"/><circle cx="428" cy="110" r="2" fill="#000"/><path d="M420 116q2 2 4 0" stroke="#000" fill="none" stroke-width="1.4"/></g>
+<g><rect x="262" y="196" width="15" height="66" rx="2" fill="#e8e8ea"/><rect x="279" y="212" width="13" height="50" rx="2" fill="#8e8e94"/><rect x="294" y="200" width="16" height="62" rx="2" fill="#4a4a50"/><rect x="312" y="218" width="12" height="44" rx="2" fill="#c4c2c3"/><rect x="326" y="206" width="14" height="56" rx="2" fill="#6a6a70"/><path d="M342 262l22-52 10 4-20 48z" fill="#e8e8ea"/></g>
+<g><ellipse cx="424" cy="206" rx="40" ry="40" fill="url(#aG)" class="glow"/><path d="M400 214h46l-10-30h-26z" fill="#f4f4f5"/><path d="M423 214v40" stroke="#c4c2c3" stroke-width="3"/><ellipse cx="423" cy="258" rx="18" ry="4" fill="#c4c2c3"/></g>
+<g><path d="M284 340l8-34h30l8 34z" fill="#e8e8ea"/><path d="M307 306c-14-8-22-24-12-36 12 4 16 20 12 36zM307 306c10-10 24-14 32-6-6 12-22 14-32 6zM307 306c-2-16 6-30 18-32 4 14-6 28-18 32z" fill="#9a9aa0"/></g>
+<g><rect x="382" y="338" width="80" height="14" rx="2" fill="#c4c2c3"/><rect x="388" y="324" width="70" height="14" rx="2" fill="#6a6a70"/><rect x="392" y="310" width="62" height="14" rx="2" fill="#e8e8ea"/><path d="M404 308h22v-16a4 4 0 0 0-4-4h-14a4 4 0 0 0-4 4z" fill="#3a3a3f" stroke="#d8d8dc" stroke-width="1.5"/></g>
+<!-- armchair -->
+<ellipse cx="150" cy="470" rx="150" ry="12" fill="#17171a"/>
+<rect x="46" y="234" width="72" height="206" rx="34" fill="#232327" stroke="#55555b" stroke-width="2"/>
+<rect x="60" y="250" width="44" height="170" rx="22" fill="rgba(255,255,255,.04)"/>
+<rect x="50" y="378" width="206" height="58" rx="28" fill="#34343a" stroke="#55555b" stroke-width="2"/>
+<path d="M64 392q80-10 178 0" stroke="rgba(255,255,255,.12)" stroke-width="3" fill="none" stroke-linecap="round"/>
+<path d="M78 434l-10 38M228 434l10 38" stroke="#8e8e94" stroke-width="6" stroke-linecap="round"/>
+<!-- person -->
+<g class="bob">
+<path d="M128 396h96" stroke="#4a4a52" stroke-width="30" stroke-linecap="round"/><path d="M224 396l9 54" stroke="#4a4a52" stroke-width="27" stroke-linecap="round"/>
+<path d="M219 449h34q8 0 8 8v3h-48v-3q0-8 6-8z" fill="#f4f4f5"/><path d="M215 461h48" stroke="#9a9aa0" stroke-width="3" stroke-linecap="round"/>
+<path d="M110 306q0-18 18-20h22q18 2 18 20l-2 88q0 6-6 6h-42q-8 0-8-8z" fill="#f4f4f5"/><path d="M152 288q16 4 16 22l-2 88q0 4-4 4h-10z" fill="rgba(0,0,0,.09)"/>
+<rect x="129" y="272" width="17" height="20" rx="6" fill="#c4c4c9"/><path d="M124 288l13 12 13-12" fill="none" stroke="#c4c4c9" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="138" cy="256" r="29" fill="#dcdce0"/><circle cx="110" cy="260" r="6" fill="#c4c4c9"/>
+<path d="M108 252a30 30 0 0 1 60-4q-8-14-26-16-20 0-34 20z" fill="#0b0b0c" stroke="#fff" stroke-width="1.4"/><path d="M122 238q14-8 30-2" stroke="#fff" stroke-opacity=".5" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M142 250l9-2M160 249l9 1" stroke="#000" stroke-width="2.2" stroke-linecap="round"/><circle cx="148" cy="259" r="8" fill="none" stroke="#000" stroke-width="2"/><circle cx="165" cy="259" r="8" fill="none" stroke="#000" stroke-width="2"/><path d="M156 259h1" stroke="#000" stroke-width="2"/><path d="M146 275q9 6 18 0" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round"/>
+<path d="M180 386l-10-82 48-8 14 90z" fill="#17171a" stroke="#d8d8dc" stroke-width="2" stroke-linejoin="round"/><path d="M174 388h92l6 9h-104z" fill="#2c2c31" stroke="#8e8e94" stroke-width="1.5" stroke-linejoin="round"/>
+<circle cx="224" cy="344" r="9" fill="#fff"/><circle cx="224" cy="344" r="4" fill="none" stroke="#000" stroke-width="2"/>
+<path d="M142 318q18 56 62 62" fill="none" stroke="#f4f4f5" stroke-width="19" stroke-linecap="round"/><path d="M146 322q16 46 54 56" fill="none" stroke="rgba(0,0,0,.08)" stroke-width="7" stroke-linecap="round"/><circle cx="208" cy="382" r="9" fill="#dcdce0"/>
+</g>
+<!-- floating cards -->
+<g class="fl a"><g transform="translate(22 62) rotate(-7)"><rect width="128" height="158" rx="14" fill="#151518" stroke="#55555b" stroke-width="1.5"/><circle cx="32" cy="34" r="15" fill="#e8e8ea"/><rect x="56" y="24" width="56" height="7" rx="3.5" fill="#c4c2c3"/><rect x="56" y="38" width="36" height="6" rx="3" fill="#5a5a60"/><rect x="16" y="68" width="96" height="6" rx="3" fill="#3a3a3f"/><rect x="16" y="84" width="80" height="6" rx="3" fill="#3a3a3f"/><rect x="16" y="100" width="92" height="6" rx="3" fill="#3a3a3f"/><rect x="16" y="116" width="58" height="6" rx="3" fill="#3a3a3f"/><circle cx="112" cy="142" r="15" fill="#fff"/><path d="M105 142l5 5 9-10" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+<g class="fl b"><rect x="150" y="22" width="146" height="42" rx="21" fill="#fff"/><circle cx="172" cy="43" r="7" fill="#000"/><text x="188" y="49" font-family="Inter,system-ui,sans-serif" font-weight="600" font-size="16" fill="#000">92% match</text></g>
+<g class="fl c"><circle cx="212" cy="196" r="26" fill="#28282a" stroke="#6a6a70" stroke-width="1.5"/><rect x="198" y="190" width="28" height="19" rx="4" fill="none" stroke="#fff" stroke-width="2"/><path d="M206 190v-4a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v4M198 199h28" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g class="fl d"><circle cx="468" cy="418" r="24" fill="#fff"/><path d="M468 404l4.6 9.6 10.4 1.2-7.8 7.2 2.2 10.4-9.4-5.4-9.4 5.4 2.2-10.4-7.8-7.2 10.4-1.2z" fill="#000"/></g>
+<g class="spk"><path d="M170 118v12M164 124h12" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M60 330v10M55 335h10" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="300" cy="60" r="3" fill="#fff"/><circle cx="496" cy="250" r="3" fill="#fff"/><circle cx="40" cy="260" r="2.5" fill="#fff"/></g>
+</svg>`;
+function vAuth(){
+  const up=authMode==='up';
+  $('#v-auth').innerHTML=`<div class="au-wrap"><div class="panel au"><h2 class="h2">${up?'Start building your career today':'Welcome back to your career community'}</h2><p class="muted">${up?'Sign up so the bot can start on your resume.':'Sign in to continue your job journey.'}</p>
+  <div class="ob-list">
+    <button type="button" class="ob g" data-sso="Google"><svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7a14.5 14.5 0 0 1 0-9.4l-7.9-6.1a24 24 0 0 0 0 21.6z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg><span>Continue with Google</span></button>
+    <button type="button" class="ob" data-sso="Microsoft"><svg width="18" height="18" viewBox="0 0 21 21" aria-hidden="true"><path fill="#F25022" d="M1 1h9v9H1z"/><path fill="#7FBA00" d="M11 1h9v9h-9z"/><path fill="#00A4EF" d="M1 11h9v9H1z"/><path fill="#FFB900" d="M11 11h9v9h-9z"/></svg><span>Continue with Microsoft</span></button>
+    <button type="button" class="ob" id="em" aria-expanded="${up}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>${up?'Sign up with email':'Sign in with email'}</span></button>
+  </div>
+  <div class="efw${up?' open':''}" id="efw"><div class="efi"><form id="af">${up?'<input name="name" placeholder="Full name" required>':''}<input name="email" type="email" placeholder="Email" required><input name="pw" type="password" placeholder="Password (6+ characters)" minlength="6" required><p class="err" id="err"></p><button class="btn">${up?'Sign up':'Sign in'}</button></form></div></div>
+  <p class="au-t">By clicking Continue to join or sign in, you agree to our <button data-i="terms">User Agreement</button>, <button data-i="privacy">Privacy Policy</button> and <button data-i="cookies">Cookie Policy</button>.</p>
+  <p class="muted sw">${up?'Already registered?':'New here?'} <a href="#" id="sw">${up?'Sign in':'Join now'}</a></p><ul class="au-tr"><li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.500-1-8-4-8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>Private by design</li><li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Takes 2 minutes</li><li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v8H4v-8M2 7h20v5H2zM12 22V7M12 7H7.500a2.500 2.500 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.500a2.500 2.500 0 0 0 0-5C13 2 12 7 12 7z"/></svg>Free to join</li></ul></div><div class="au-art" aria-hidden="true">${AUART}</div></div>`;
+  const fw=$('#efw'),eb=$('#em'),openF=()=>{fw.classList.add('open');eb.setAttribute('aria-expanded','true');setTimeout(()=>{const i=$('#af input');i&&i.focus({preventScroll:true})},350)};
+  eb.onclick=()=>fw.classList.contains('open')?(fw.classList.remove('open'),eb.setAttribute('aria-expanded','false')):openF();
+  $$('[data-sso]').forEach(b=>b.onclick=()=>{toast(b.dataset.sso+' sign-in isn’t connected in this demo. Continue with email.');openF()});
+  $('#sw').onclick=e=>{e.preventDefault();authMode=up?'in':'up';vAuth()};
+  $('#af').onsubmit=e=>{
+    e.preventDefault();const f=e.target,em=f.email.value.trim().toLowerCase(),U=LS.get('rb_users')||{};
+    if(up){if(U[em])return $('#err').textContent='This email already has an account. Sign in instead.';
+      U[em]={name:(f.name.value.trim()||em.split('@')[0]),pw:f.pw.value};LS.set('rb_users',U)}
+    else if(!U[em]||U[em].pw!==f.pw.value)return $('#err').textContent='Email or password is incorrect.';
+    login(em,U[em].name);
+  };
+}
+function login(em,name,silent){
+  S={user:{email:em,name},...D,pref:{...PD},...(LS.get('rb_s_'+em)||{})};
+  LS.set('rb_sess',em);ui(true);hist=[];
+  if(!silent){go('bot');toast('Welcome, '+name)}tick();
+}
+function logout(){authMode='in';clearTimeout(timer);S={user:null,...D,pref:{...PD}};LS.del('rb_sess');ui(false);go('home')}
+
+/* step 1: resume bot */
+function vBot(){
+  $('#v-bot').innerHTML=`<div class="panel"><p class="muted">Hi ${esc(S.user.name)}</p><h2 class="h2">Resume Bot</h2><p class="muted">Upload your resume. The bot scans it, scores it and finds jobs that fit.</p>
+  <label class="drop"><span class="gi">↑</span><span>${S.skills.length?'Upload a new resume':'Choose your resume (PDF, DOC, TXT)'}</span><input type="file" id="rf" accept=".pdf,.doc,.docx,.txt" hidden></label></div><div id="res"></div>`;
+  $('#rf').onchange=e=>e.target.files[0]&&scan(e.target.files[0]);
+  S.skills.length&&res();
+}
+async function scan(file){
+  $('#res').innerHTML='<div class="panel"><p class="muted" id="st">Reading your resume…</p><div class="scan"><i></i></div></div>';
+  const t=(await file.text().catch(()=>'')).toLowerCase();
+  let f=SK.filter(s=>new RegExp('\\b'+s+'\\b').test(t)),demo=f.length<3;
+  if(demo)f=FD[S.pref.field]||FD.All;
+  for(const m of ['Extracting skills and experience…','Matching against open roles…']){$('#st').textContent=m;await sleep(900)}
+  clearTimeout(timer);Object.assign(S,D,{skills:f,demo:demo?1:0,score:Math.min(94,38+f.length*7)});save();skipCount=1;res();skipCount=0;revealScore();
+}
+function res(){
+  const m=matches(),ms=missing(m.slice(0,4)).slice(0,3);
+  $('#res').innerHTML=`<div class="panel"><div class="row"><div><p class="muted">Resume score</p><h2 class="h2">${S.score}/100</h2></div><div class="bar"><i style="width:${S.score}%"></i></div></div>
+  <div class="chips">${S.skills.map(s=>`<span>${cap(s)}</span>`).join('')}</div>
+  ${S.demo?'<p class="muted note">This file’s text couldn’t be read in the browser, so sample skills are shown. Add a server-side parser for PDF and DOCX.</p>':''}
+  <h3>Bot suggestions</h3><ul class="sg">${ms.map(([s,n])=>`<li>Add <b>${cap(s)}</b>. It’s required in ${n} of your top matches.</li>`).join('')}<li>Quantify results, for example “cut page load time by 40%”.</li><li>Keep it to one page with a skills line near the top.</li></ul></div>
+  <div class="panel"><h2 class="h2">How do you want to apply?</h2><div class="two">
+  <button class="opt" id="auto"><span class="gi">⚡</span><b>Auto-Pilot</b><span>One click. The bot applies to every match, scans, and tracks your shortlist and interview.</span></button>
+  <button class="opt" data-go="jobs"><span class="gi">☝</span><b>Manual</b><span>Review your matched jobs and apply to the ones you pick.</span></button></div></div>`;
+  $('#auto').onclick=()=>{const a=m.slice(0,8);S.mode='auto';S.applied=a.map(j=>j.id);start(a[0].id);toast('Auto-Pilot applied to '+a.length+' jobs')};
+}
+
+/* step 2: jobs */
+function vJobs(){
+  const m=matches(),ok=S.skills.length;
+  $('#v-jobs').innerHTML=`<div class="panel"><h2 class="h2">Jobs for your resume</h2>${ok?(S.mode==='auto'?'<p class="muted">Auto-Pilot has applied to all matches.</p>':''):'<p class="muted" style="margin-bottom:14px">Upload your resume first so the bot can match jobs.</p><button class="btn" data-go="bot">Open Resume Bot</button>'}
+  ${ok?m.map(j=>`<div class="job"><div class="jl">${cLogo(j.co)}<div><b>${j.role}</b><p class="muted">${j.co} · ${j.loc} · ${PAY[j.id]}</p></div></div><div class="r"><span class="pc">${j.p}%</span>${S.applied.includes(j.id)?(S.job===j.id?'<button class="btn dark sm" data-go="track">Track</button>':'<button class="btn dark sm" disabled>Applied</button>'):`<button class="btn sm" data-ap="${j.id}">Apply</button>`}</div></div>`).join(''):''}</div>`;
+}
+
+/* step 3: pipeline — applied > bot scan > shortlisted > interview > placed */
+function start(id){clearTimeout(timer);Object.assign(S,{job:id,stage:0,out:null,want:null,at:[Date.now()]});save();go('track');tick()}
+function tick(){
+  clearTimeout(timer);
+  if(S.job&&S.stage>=0&&S.stage<3&&!S.out)timer=setTimeout(()=>{S.stage++;(S.at=S.at||[])[S.stage]=Date.now();save();if(!$('#v-track').hidden)vTrack();tick()},1800);
+}
+function vTrack(){
+  const j=J(S.job);if(!j)return go('jobs');
+  const msg=[`Received: your application reached ${j.co}.`,`Screened: the bot is checking your skills against the ${j.role} requirements…`,`Reviewed: ${j.co}’s hiring team is looking at your application.`,`Decision stage with ${j.co}. Record the result below.`,`You’re placed at ${j.co}.`];
+  let tail='';
+  if(S.stage===3&&!S.out)tail=`<p class="muted">Record your result. In production, the employer’s status updates this automatically.</p><div class="two"><button class="btn" data-out="placed">I cleared it</button><button class="btn dark" data-out="rejected">Not selected</button></div>`;
+  if(S.out==='rejected')tail=`<h3>Still want to join ${j.co}?</h3><p class="muted">We’ll build a course path around the skills ${j.co} hires for. Then you can re-apply.</p><div class="two"><button class="btn" data-want="${j.id}">Yes, upskill me</button><button class="btn dark" data-go="jobs">Show other jobs</button></div>`;
+  if(S.stage===4)tail=`<p class="muted"><span class="gi">✓</span> Congratulations. Our job here is done.</p>`;
+  const li=STG.map((s,i)=>`<li class="${i<S.stage?'done':i===S.stage?(S.out==='rejected'?'fail':S.stage===4?'done':'now'):''}">${s}</li>`).join('');
+  $('#v-track').innerHTML=`<div class="panel"><p class="muted">${esc(j.role)} · ${j.co}${S.mode==='auto'?` · Auto-Pilot applied to ${S.applied.length} jobs, tracking your top match`:''}</p><h2 class="h2">Your application</h2><ol class="steps">${li}</ol><p class="stg">${S.out==='rejected'?`${j.co} didn’t move forward this time.`:msg[S.stage]}</p>${tail}</div>`;
+}
+
+/* step 4: upskill for the chosen company */
+/* purchased courses: everything the learner has enrolled in, with live progress */
+const kIcon=k=>{const m=/^c(\d+)$/.exec(k);if(m)return cIco(ICN[+m[1]],CD[+m[1]]);const s=k.replace(/^\d+/,'');return cIco(SKI[s]||'spark',SKD[s])};
+function purchased(){
+  const ks=S.enrolled||[],done=ks.filter(k=>certOk(k)).length;
+  const head=`<div class="panel pur"><div class="row"><div><h2 class="h2">Purchased courses</h2><p class="muted">${ks.length?`${ks.length} course${ks.length>1?'s':''} unlocked${done?` · ${done} completed`:''}. Pick up where you left off.`:'Courses you enroll in appear here with your progress.'}</p></div>${ks.length?`<span class="pc" aria-label="${ks.length} purchased">${ks.length}</span>`:''}</div>`;
+  if(!ks.length)return head+`<div class="pur-empty"><span class="gi">+</span><p class="muted">Nothing purchased yet. Choose a course from the catalog below.</p></div></div>`;
+  return head+`<div class="pur-list">${ks.map((k,i)=>{const c=cInfo(k),n=prg(k),ok=n>=6,w=Math.round(n/6*100);return `<div class="pr${ok?' ok':''}" style="--i:${i}"><span class="cl cc-b" aria-hidden="true">${kIcon(k)}</span><div class="pr-i"><b>${c.t}</b><p class="muted">${c.w} weeks · ${c.f} · ${ok?'Completed':'Step '+Math.min(n+1,6)+' of 6'}</p><div class="bar wide"><i data-w="${w}" style="width:0"></i></div></div><div class="pr-r"><span class="pc">${w}%</span><button class="btn sm${ok?'':' dark'}" data-go="learn">${ok?'Certificate':'Continue'}</button></div></div>`}).join('')}</div></div>`;
+}
+function fillBars(sel){const bs=$$(sel+' .bar i[data-w]');if(!bs.length)return;requestAnimationFrame(()=>requestAnimationFrame(()=>bs.forEach(b=>b.style.width=b.dataset.w+'%')))}
+function vCourses(){
+  const j=J(S.want),gaps=j?j.sk.filter(s=>!S.skills.includes(s)):[];
+  const L=j?(gaps.length?gaps:j.sk):missing(matches()).slice(0,4).map(x=>x[0]);
+  $('#v-courses').innerHTML=`<div class="panel"><h2 class="h2">${j?`Skill path for ${j.co}`:'Courses for you'}</h2><p class="muted" style="margin-bottom:6px">${j?`Built around what ${j.co} looks for in a ${j.role}.`:'Based on the skills your matched jobs ask for.'}</p>
+  ${S.skills.length?L.map((s,i)=>{const k=(j?j.id:0)+s,on=S.enrolled.includes(k);return`<div class="job"><div><b>${cap(s)}${j?` for ${j.co} ${j.role}s`:' essentials'}</b><p class="muted">${3+i} weeks · projects and a mock interview</p></div><button class="btn sm ${on?'dark':''}" data-en="${k}">${on?'Enrolled':'Enroll'}</button></div>`}).join(''):'<p class="muted" style="margin-bottom:14px">Upload your resume to get course recommendations.</p><button class="btn" data-go="bot">Open Resume Bot</button>'}
+  ${j?`<div style="margin-top:16px"><button class="btn" id="re" ${S.enrolled.length?'':'disabled'}>Re-apply to ${j.co}</button></div>`:''}</div>`;
+  const re=$('#re');if(re)re.onclick=()=>start(j.id);
+}
+
+/* settings, toast, partners */
+const PAY={1:'₹28–40 LPA',2:'₹24–34 LPA',3:'₹26–38 LPA',4:'₹22–32 LPA',5:'₹14–20 LPA',6:'₹8–12 LPA'};
+let tt;function toast(m){clearTimeout(tt);const o=$('.toast');o&&o.remove();document.body.insertAdjacentHTML('beforeend',`<div class="toast" role="status">${esc(m)}</div>`);tt=setTimeout(()=>{const x=$('.toast');x&&x.remove()},2400)}
+function vSettings(){
+  const u=S.user,L=['Any','Bengaluru','Hyderabad','Pune','Delhi','Mumbai','Chennai','Remote'];
+  $('#v-settings').innerHTML=`<div class="panel"><h2 class="h2">Settings</h2><h3>Account</h3><div class="kv"><span>Name</span><span>${esc(u.name)}</span></div><div class="kv"><span>Email</span><span>${esc(u.email)}</span></div><h3>Preferred job location</h3><p class="muted">The bot only matches and applies to roles in this location, plus remote roles.</p><div class="seg">${L.map(l=>`<button data-loc="${l}" class="${S.pref.loc===l?'on':''}">${l}</button>`).join('')}</div><h3>Your data</h3><p class="muted">Reset clears your resume, applications and enrolled courses. Your account stays.</p><div class="seg"><button id="rs">Reset progress</button><button id="dl" class="danger">Delete account</button></div></div>`;
+  $$('[data-loc]').forEach(b=>b.onclick=()=>{S.pref.loc=b.dataset.loc;save();vSettings();toast('Location saved')});
+  $('#rs').onclick=()=>{clearTimeout(timer);Object.assign(S,D);save();toast('Progress reset')};
+  let ok=0;$('#dl').onclick=e=>{if(!ok){ok=1;e.target.textContent='Click again to confirm';return}const U=LS.get('rb_users')||{};delete U[u.email];LS.set('rb_users',U);LS.del('rb_s_'+u.email);logout();toast('Account deleted')};
+}
+/* Company logos. Real brand icons load from Google's favicon service when online; if one fails (offline, blocked) a building icon is shown.
+   To use your own files instead (works offline), add e.g. LOGOS['Google']='logos/google.svg'; */
+const LOGOS={},LD={Google:'google.com',Microsoft:'microsoft.com',Amazon:'amazon.com',Flipkart:'flipkart.com',Razorpay:'razorpay.com',Infosys:'infosys.com',Adobe:'adobe.com',Atlassian:'atlassian.com'};
+const BLD='<svg viewBox="0 0 24 24" width="56%" height="56%" fill="none" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5l8-2v18M12 9h8v12M7 8h2M7 12h2M7 16h2M15 13h2M15 17h2M2 21h20"/></svg>';
+function logoImg(n){const u=LOGOS[n]||(LD[n]&&'https://www.google.com/s2/favicons?domain='+LD[n]+'&sz=128');return u?`<img src="${u}" alt="" onerror="this.outerHTML=BLD">`:BLD}
+function cLogo(n,z=36){return `<span class="cl" style="width:${z}px;height:${z}px" aria-hidden="true">${logoImg(n)}</span>`}
+const PN=['Google','Microsoft','Amazon','Flipkart','Razorpay','Infosys','Adobe','Atlassian'];
+$('#track').innerHTML=[0,1].map(k=>PN.map(n=>`<span${k?' class="dup" aria-hidden="true"':''}>${cLogo(n,30)}${n}</span>`).join('')).join('');
+
+/* fields, jobs, courses, ads */
+const FIELDS=['All','Tech','Teaching','Healthcare','Finance','Business','Marketing','Design','Operations'];
+const FD={All:['javascript','react','sql','git','html','css'],Teaching:['teaching','mathematics','lesson planning','communication','public speaking'],Healthcare:['nursing','patient care','communication','first aid'],Finance:['accounting','tally','gst','excel'],Business:['sales','communication','negotiation','customer service'],Marketing:['seo','content writing','social media','english'],Design:['figma','photoshop','html','css'],Operations:['operations','excel','project management','autocad']};FD.Tech=FD.All;
+JOBS.slice(0,6).forEach(j=>j.f='Tech');
+[[7,'Sunrise International School','Mathematics Teacher','Bengaluru','Teaching',['teaching','mathematics','lesson planning','communication'],'₹6–10 LPA'],[8,'Vidya Coaching Hub','Physics Faculty (JEE/NEET)','Delhi','Teaching',['physics','teaching','public speaking','communication'],'₹8–18 LPA'],[9,'Greenfield Academy','Primary School Teacher','Pune','Teaching',['teaching','lesson planning','classroom management','communication'],'₹4–7 LPA'],[10,'EduSpark Online','Online Tutor','Remote','Teaching',['teaching','english','mathematics','communication'],'₹4–9 LPA'],[11,'CarePlus Hospitals','Staff Nurse','Chennai','Healthcare',['nursing','patient care','first aid','communication'],'₹4–8 LPA'],[12,'MediTrust Clinic','Medical Lab Technician','Hyderabad','Healthcare',['lab testing','biology','patient care','communication'],'₹3–6 LPA'],[13,'Nova Finance','Accountant','Mumbai','Finance',['accounting','tally','gst','excel'],'₹4–8 LPA'],[14,'BrightPath Logistics','Operations Executive','Delhi','Operations',['operations','excel','project management','communication'],'₹4–8 LPA'],[15,'Spark Retail','Sales Executive','Mumbai','Business',['sales','negotiation','customer service','communication'],'₹3–7 LPA'],[16,'Pixel Studio','UI/UX Designer','Bengaluru','Design',['figma','photoshop','html','communication'],'₹8–16 LPA'],[17,'Growthly','Digital Marketer','Remote','Marketing',['seo','content writing','social media','excel'],'₹5–10 LPA'],[18,'Inkwell Media','Content Writer','Remote','Marketing',['content writing','seo','english','communication'],'₹3–7 LPA'],[19,'TalentBridge','HR Recruiter','Pune','Business',['recruitment','communication','negotiation','excel'],'₹4–8 LPA'],[20,'SteelWorks Infra','Civil Engineer','Hyderabad','Operations',['autocad','project management','communication','excel'],'₹5–10 LPA']].forEach(([id,co,role,loc,f,sk,p])=>{JOBS.push({id,co,role,loc,f,sk});PAY[id]=p});
+const CAT=[['Full-Stack Web Development','Tech',12],['Python for Data Analysis','Tech',8],['Cloud & DevOps Essentials','Tech',10],['DSA & Coding Interviews','Tech',10],['Classroom Management Mastery','Teaching',4],['Lesson Planning & Assessment','Teaching',5],['Teaching Maths with Visual Methods','Teaching',6],['Public Speaking for Educators','Teaching',3],['Online Tutoring Masterclass','Teaching',4],['Clinical Communication & Patient Care','Healthcare',6],['Lab Safety & Diagnostics Basics','Healthcare',6],['Accounting with Tally & GST','Finance',8],['Excel for Finance Professionals','Finance',5],['Consultative Selling','Business',4],['HR & Talent Acquisition','Business',6],['SEO & Content Marketing','Marketing',6],['Social Media Strategy','Marketing',4],['UI/UX Design with Figma','Design',8],['Project Management Fundamentals','Operations',5],['AutoCAD for Civil & Mechanical','Operations',6],['Resume & Interview Mastery','All',2],['Communication Skills for Work','All',3]];
+const AD=[{n:'Physics Wallah',t:'Prepare for JEE and NEET, or build a career in teaching.',u:'https://www.pw.live'},{n:'Allen',t:'Classroom and online coaching for JEE and NEET.',u:'https://allen.in'},{n:'Unacademy',t:'Live classes and test series for competitive exams.',u:'https://unacademy.com'},{n:'Vedantu',t:'Live online tutoring for school and exam prep.',u:'https://www.vedantu.com'}];
+let ai=0;const adHTML=()=>{const L=adsFor(),a=L[ai%L.length];return `<div class="panel ad"><div><span class="tag">Sponsored</span><b class="adn">${a.n}</b><p class="muted">${a.t}</p></div><a class="btn sm" href="${a.u}" target="_blank" rel="noopener sponsored">Learn more</a></div>`};
+setInterval(()=>{ai=(ai+1)%AD.length;$$('.ad').forEach(e=>e.outerHTML=adHTML())},5200);
+const fchips=()=>{const f=S.pref.field||'All';return `<div class="seg">${FIELDS.map(x=>`<button data-f="${x}" class="${f===x?'on':''}">${x}</button>`).join('')}</div>`};
+const jobRow=j=>`<div class="job"><div class="jl">${cLogo(j.co)}<div><b>${j.role}</b><p class="muted">${j.co} · ${j.loc} · ${PAY[j.id]}</p></div></div><div class="r"><span class="pc">${j.p}%</span>${S.applied.includes(j.id)?(S.job===j.id?'<button class="btn dark sm" data-go="track">Track</button>':'<button class="btn dark sm" disabled>Applied</button>'):`<button class="btn sm" data-ap="${j.id}">Apply</button>`}</div></div>`;
+function vBot(){
+  $('#v-bot').innerHTML=`<div class="panel"><p class="muted">Hi ${esc(S.user.name)}</p><h2 class="h2">Resume Bot</h2><p class="muted">Pick your field, then upload your resume. The bot scans it, scores it and finds jobs that fit.</p>${fchips()}<label class="drop"><span class="gi">↑</span><span>${S.skills.length?'Upload a new resume':'Choose your resume (PDF, DOC, TXT)'}</span><input type="file" id="rf" accept=".pdf,.doc,.docx,.txt" hidden></label></div><div id="res"></div>`;
+  $('#rf').onchange=e=>e.target.files[0]&&scan(e.target.files[0]);
+  S.skills.length&&res();
+}
+function vJobs(){
+  const m=matches(),ok=S.skills.length;
+  $('#v-jobs').innerHTML=`<div class="panel"><h2 class="h2">Jobs for your resume</h2><p class="muted">${ok?`${m.length} roles match ${S.pref.field==='All'?'across every field':'in '+S.pref.field}.${S.mode==='auto'?' Auto-Pilot applied to your top 8.':''}`:'Upload your resume first so the bot can match jobs.'}</p>${fchips()}${ok?m.map(jobRow).join(''):'<div style="margin-top:14px"><button class="btn" data-go="bot">Open Resume Bot</button></div>'}</div>${adHTML()}`;
+}
+function vCourses(){
+  const j=J(S.want),f=S.pref.field||'All',gaps=j?j.sk.filter(s=>!S.skills.includes(s)):[],L=j?(gaps.length?gaps:j.sk):[];
+  const row=(t,sub,k,ic,n=0)=>{const on=S.enrolled.includes(k),[w,tg]=sub.split(' · ');return `<div class="cc${on?' on':''}" style="--i:${n}"><div class="cc-top"><span class="cl cc-b" aria-hidden="true">${ic}</span><span class="tag${on?' pd':''}">${on?'✓ Purchased':tg}</span></div><b>${t}</b><div class="cc-m"><span>${w}</span><span>Certificate</span></div>${on?`<button class="btn dark sm" data-tr="${k}">Track</button>`:`<button class="btn sm" data-en="${k}">Enroll</button>`}</div>`};
+  $('#v-courses').innerHTML=purchased()+adHTML()+(j?`<div class="panel"><h2 class="h2">Skill path for ${j.co}</h2><p class="muted">Built around what ${j.co} looks for in a ${j.role}.</p><div class="cgrid">${L.map((s,i)=>row(`${cap(s)} for ${j.co} ${j.role}s`,`${3+i} weeks · Skill path`,j.id+s,cIco(SKI[s]||'spark',SKD[s]),i)).join('')}</div><div style="margin-top:16px"><button class="btn" id="re" ${S.enrolled.length?'':'disabled'}>Re-apply to ${j.co}</button></div></div>`:'')+`<div class="panel"><h2 class="h2">Course catalog</h2><p class="muted">Short, practical courses for every career field.</p>${fchips()}<div class="cgrid">${CAT.map((c,i)=>[c,i]).filter(([c])=>f==='All'||c[1]===f||c[1]==='All').map(([c,i],n)=>row(c[0],`${c[2]} weeks · ${c[1]==='All'?'Any field':c[1]}`,'c'+i,cIco(ICN[i],CD[i]),n)).join('')}</div></div>`+sponsored();
+  const re=$('#re');if(re)re.onclick=()=>start(j.id);
+  fillBars('#v-courses');
+}
+function burst(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;for(let i=0;i<46;i++){const e=document.createElement('i');e.className='cf';e.style.cssText=`left:${Math.random()*100}vw;--x:${(Math.random()-.5)*160}px;--s:${3+Math.random()*6}px;animation-delay:${Math.random()*.5}s;animation-duration:${1.8+Math.random()*1.6}s`;document.body.appendChild(e);setTimeout(()=>e.remove(),4200)}}
+const RW=['developers','teachers','nurses','designers','accountants','marketers','engineers','tutors','recruiters'];let rwi=0;
+setInterval(()=>{const b=$('#rw');if(!b)return;rwi=(rwi+1)%RW.length;b.classList.remove('sw');void b.offsetWidth;b.textContent=RW[rwi];b.classList.add('sw')},2000);
+
+/* chat assistant (scripted) */
+(()=>{
+  document.body.insertAdjacentHTML('beforeend',`<button class="cb-fab" id="cbf" aria-label="Open career assistant"><span class="eyes"><i></i><i></i></span></button><div class="cb" id="cb" hidden role="dialog" aria-label="Career assistant"><div class="cb-h"><span class="cb-av"><span class="eyes"><i></i><i></i></span></span><div><b>Evo</b><small>Career assistant</small></div><button id="cbx" aria-label="Close chat">×</button></div><div class="cb-m" id="cbm" aria-live="polite"></div><div class="cb-q" id="cbq"></div><form class="cb-f" id="cbfm"><input id="cbi" placeholder="Ask about jobs, courses, resume…" autocomplete="off" aria-label="Message"><button class="btn sm">Send</button></form></div>`);
+  const box=$('#cb'),msgs=$('#cbm'),qs=$('#cbq'),MAIN=[['Scan my resume','go:bot'],['Teaching jobs','f:Teaching'],['Browse courses','go:courses'],['My application status','status']];
+  let started=0,busy=0;
+  const add=(t,c)=>{const w=c==='b'&&!/[<&]/.test(t)?t.split(' ').map((x,i)=>`<span class="w" style="animation-delay:${Math.min(i,30)*35}ms">${x} </span>`).join(''):t;msgs.insertAdjacentHTML('beforeend',`<div class="cm ${c}">${w}</div>`);msgs.scrollTop=msgs.scrollHeight};
+  async function say(t,c=MAIN){busy=1;qs.innerHTML='';msgs.insertAdjacentHTML('beforeend','<div class="cm b ty"><span></span><span></span><span></span></div>');msgs.scrollTop=msgs.scrollHeight;await sleep(650+Math.min(t.length*6,700));const ty=$('.ty');ty&&ty.remove();add(t,'b');qs.innerHTML=c.map(x=>`<button data-c="${x[1]}">${x[0]}</button>`).join('');busy=0}
+  const hello=()=>say('Hi, I’m Evo. I match jobs across every field, from teaching and healthcare to tech and finance. What would you like to do?');
+  function status(){const j=J(S.job);return j&&S.stage>=0?say(S.out==='rejected'?`${j.co} didn’t move forward this time. I can build a skill path for them.`:`You’re at the ${STG[S.stage]} stage with ${j.co} for ${j.role}.`,[['Open tracker','go:track']]):say('No active application yet. Scan your resume, then choose Auto-Pilot or apply manually.',[['Scan my resume','go:bot']])}
+  function act(v){
+    if(!S.user&&v!=='go:auth')return say('Create a free account first and I’ll start matching you.',[['Sign up','go:auth']]);
+    const[k,x]=v.split(':');
+    if(k==='go'){go(x);return say(x==='auth'?'Create your account to begin.':'Done. Ask me anything else.')}
+    S.pref.field=x;save();go(k==='f'?'jobs':'courses');
+    return say(`Showing ${x} ${k==='f'?'roles':'courses'}.${k==='f'&&!S.skills.length?' Upload your resume so I can rank them for you.':''}`);
+  }
+  function reply(q){
+    const s=q.toLowerCase(),has=r=>r.test(s);
+    if(has(/\b(hi|hello|hey)\b/))return hello();
+    if(has(/teach|school|tutor|faculty|professor|lecturer/))return say('Teaching is open: school teachers, coaching faculty and online tutors. Choose the Teaching field and I’ll rank those roles for you.',[['Show teaching jobs','f:Teaching'],['Teaching courses','c:Teaching']]);
+    if(has(/resume|cv|score|upload/))return say(S.skills.length?`Your resume scores ${S.score}/100 with ${S.skills.length} skills detected. Adding the skills your top roles ask for is the quickest way up.`:'Upload your resume in Resume Bot. I’ll scan it, score it and suggest fixes in seconds.',[['Open Resume Bot','go:bot']]);
+    if(has(/auto|one.?click|automat/))return say('Auto-Pilot applies to your top 8 matches in one click, scans your resume for each, and tracks the shortlist and interview for you.',[['Try Auto-Pilot','go:bot']]);
+    if(has(/job|apply|opening|role|vacanc|work/)){const t=S.skills.length&&matches()[0];return say(t?`Your top match is ${t.role} at ${t.co} (${t.p}%). Filter by field to see more.`:'Tell me your field and upload your resume, and I’ll rank roles across teaching, healthcare, finance, tech and more.',[['See my jobs','go:jobs'],['Teaching jobs','f:Teaching'],['Healthcare jobs','f:Healthcare']])}
+    if(has(/progress|my learning|my course|enrolled/))return say(S.enrolled.length?`You’re enrolled in ${S.enrolled.length} course${S.enrolled.length>1?'s':''}. Open My learning to see each step and mark it complete.`:'You haven’t enrolled in a course yet. The catalog has short courses for every field.',[['Open My learning','go:learn'],['Browse courses','go:courses']]);
+    if(has(/course|learn|skill|upskill|train/))return say('The catalog has short courses for every field: classroom management, patient care, Tally and GST, SEO, Figma, full-stack and more. If you miss a company’s shortlist, I’ll build a path for it.',[['Browse courses','go:courses']]);
+    if(has(/status|track|interview|shortlist|placed/))return status();
+    if(has(/salary|pay|ctc|lpa/))return say('Each job shows a sample salary range. Use the field and location filters to compare roles side by side.',[['See jobs','go:jobs']]);
+    if(has(/setting|location|city|delete|reset/))return say('Settings lets you change your preferred location, reset progress or delete your account.',[['Open settings','go:settings']]);
+    if(has(/thank/))return say('Happy to help. Good luck out there!');
+    return say('I can help with your resume, jobs in any field, courses and your application status. Try one of these:');
+  }
+  const run=v=>v==='status'?status():act(v);
+  $('#cbf').onclick=()=>{box.hidden=!box.hidden;if(!box.hidden){$('#cbi').focus();if(!started){started=1;hello()}}};
+  $('#cbx').onclick=()=>box.hidden=true;
+  qs.onclick=e=>{const b=e.target.closest('button');if(!b||busy)return;add(esc(b.textContent),'u');run(b.dataset.c)};
+  $('#cbfm').onsubmit=e=>{e.preventDefault();const i=$('#cbi'),v=i.value.trim();if(!v||busy)return;i.value='';add(esc(v),'u');reply(v)};
+  document.addEventListener('keydown',e=>e.key==='Escape'&&(box.hidden=true));
+})();
+
+/* sponsors, learning tracker */
+AD.forEach(a=>a.c='Teaching');
+AD.push({c:'Tech',n:'Scaler',t:'Structured programs for software engineers.',u:'https://www.scaler.com'},{c:'Tech',n:'Coding Ninjas',t:'Learn to code with guided courses and practice.',u:'https://www.codingninjas.com'},{c:'Finance',n:'Zerodha Varsity',t:'Free modules on markets and personal finance.',u:'https://zerodha.com/varsity'},{c:'Finance',n:'ICAI',t:'Education and resources for chartered accountancy.',u:'https://www.icai.org'},{c:'Healthcare',n:'Indian Red Cross',t:'First aid and health training programmes.',u:'https://indianredcross.org'},{c:'Business',n:'upGrad',t:'Online programs for working professionals.',u:'https://www.upgrad.com'},{c:'Business',n:'LinkedIn Learning',t:'Business, leadership and career courses.',u:'https://www.linkedin.com/learning'},{c:'Marketing',n:'HubSpot Academy',t:'Free courses in marketing and sales.',u:'https://academy.hubspot.com'},{c:'Marketing',n:'Google Skillshop',t:'Training for Google marketing and analytics tools.',u:'https://skillshop.withgoogle.com'},{c:'Design',n:'Canva',t:'Design skills and tools for everyone.',u:'https://www.canva.com'},{c:'Design',n:'Figma',t:'Learn product design with Figma.',u:'https://www.figma.com'},{c:'Operations',n:'NPTEL',t:'Free engineering and management courses from the IITs.',u:'https://nptel.ac.in'},{c:'Operations',n:'Autodesk',t:'Learn AutoCAD and design software basics.',u:'https://www.autodesk.com'},{c:'All',n:'SWAYAM',t:'Free online courses from Indian institutions.',u:'https://swayam.gov.in'},{c:'All',n:'Coursera',t:'Courses and certificates from universities and companies.',u:'https://www.coursera.org'});
+const adsFor=()=>{const f=S.pref.field||'All';return AD.filter(a=>f==='All'||a.c===f||a.c==='All')};
+const sponsored=()=>`<div class="panel"><h2 class="h2">Sponsored</h2><p class="muted">Learning partners for ${(S.pref.field||'All')==='All'?'every field':S.pref.field}.</p><div class="adg">${adsFor().map(a=>`<div class="adc"><span class="tag">${a.c==='All'?'Any field':a.c}</span><b>${a.n}</b><p class="muted">${a.t}</p><a class="lnk" href="${a.u}" target="_blank" rel="noopener sponsored">Learn more</a></div>`).join('')}</div></div>`;
+const LST=[['Enrolled','Your seat is confirmed and a learning plan is created.'],['Orientation','Kickoff session, schedule and tools set up.'],['Modules','Weekly lessons with short quizzes.'],['Project','Build a portfolio piece reviewed by a mentor.'],['Mock interview','Practice with feedback before the real thing.'],['Certificate','Completion certificate to add to your resume.']];
+const cInfo=k=>{const m=/^c(\d+)$/.exec(k);if(m){const c=CAT[+m[1]];return{t:c[0],w:c[2],f:c[1]==='All'?'Any field':c[1]}}const j=J(parseInt(k)),s=k.replace(/^\d+/,'');return{t:j?`${cap(s)} for ${j.co} ${j.role}s`:cap(s),w:4,f:j?j.f:'Skill path'}};
+function vLearn(){
+  const P=S.prog=S.prog||{},ks=S.enrolled;
+  $('#v-learn').innerHTML=`<div class="panel"><h2 class="h2">My learning</h2><p class="muted">${ks.length?`${ks.length} course${ks.length>1?'s':''} in progress. Every course runs through six steps, from kickoff to your certificate.`:'You haven’t enrolled yet. Pick a course to start your learning plan.'}</p>${ks.length?'':'<div style="margin-top:14px"><button class="btn" data-go="courses">Browse courses</button></div>'}</div>`+ks.map(k=>{const c=cInfo(k),n=prg(k);return `<div class="panel" data-k="${esc(k)}"><div class="row"><div><b>${c.t}</b><p class="muted">${c.w} weeks · ${c.f}</p></div><span class="pc">${Math.round(n/6*100)}%</span></div><div class="bar wide"><i style="width:${n/6*100}%"></i></div><ol class="tl">${LST.map((s,i)=>`<li class="${i<n?'done':i===n?'now':''}${fxK===k&&i===fxI?' fx':''}" style="--i:${i}"><b>${s[0]}</b><span>${s[1]}</span></li>`).join('')}</ol>${n>=6?'<p class="muted earned"><span class="gi">✓</span> Congratulations! Certificate earned. Download it for your resume.</p><div class="seg"><button data-x="cert:png:'+k+'">Download image</button><button data-x="cert:jpg:'+k+'">JPG</button><button data-x="cert:pdf:'+k+'">Download PDF</button></div>':`<div class="seg"><button class="on" data-adv="${k}">${n>4?'Get certificate':'Complete “'+LST[n][0]+'” →'}</button><button data-en="${k}">Leave course</button></div>`}</div>`}).join('');
+  fxRun();
+}
+const _res=res;res=function(){_res();const h=$('#res .h2');if(!h||reduce||skipCount)return;const t=S.score,s=performance.now();(function f(n){const p=Math.min(1,(n-s)/900);h.textContent=Math.round(t*p)+'/100';p<1&&requestAnimationFrame(f)})(s)};
+
+/* ===== v3: animated score reveal + earned course steps ===== */
+let skipCount=0;
+function revealScore(){
+  const p=$('#res .panel');if(!p)return;const h=$('.h2',p),b=$('.bar i',p),c=$('.chips',p),t=S.score;
+  if(reduce){p.scrollIntoView({block:'start'});return}
+  h.textContent='0/100';b.style.animation='none';b.style.transition='none';b.style.width='0';
+  h.parentNode.insertAdjacentHTML('beforeend','<span class="sc-v">'+(t>=80?'Strong resume':t>=60?'Good start':'Room to grow')+'</span>');
+  c.classList.add('pop');[...c.children].forEach((x,i)=>x.style.setProperty('--k',i));
+  let ran=0;const run=()=>{if(ran++)return;p.classList.add('sc-hl');const s=performance.now();(function f(n){const q=Math.min(1,(n-s)/1600),e=1-Math.pow(1-q,3);h.textContent=Math.round(t*e)+'/100';b.style.width=t*e+'%';if(q<1)requestAnimationFrame(f);else{$('.sc-v',p).classList.add('on');c.classList.add('on')}})(s)};
+  p.scrollIntoView({behavior:'smooth',block:'start'});
+  const o=new IntersectionObserver(es=>{if(es[0].isIntersecting){o.disconnect();setTimeout(run,300)}},{threshold:.9});o.observe(h);setTimeout(run,2500);
+}
+/* a step counts only when it has a verified record; progress is derived from those records */
+const vrs=k=>((S.vr=S.vr||{})[k]=S.vr[k]||{}),prg=k=>{const v=vrs(k);let n=1;while(n<6&&v[n])n++;return n},certOk=k=>prg(k)>=6;
+const mdl=h=>{closeM();document.body.insertAdjacentHTML('beforeend',`<div class="mdl" id="mdl"><div class="box">${h}</div></div>`)},closeM=()=>{const m=$('#mdl');m&&m.remove()};
+document.addEventListener('click',e=>{if(e.target.closest('[data-mc]')||e.target.id==='mdl')closeM()});
+document.addEventListener('keydown',e=>e.key==='Escape'&&closeM());
+let fxK=null,fxI=0;
+/* one click completes the current step and moves straight to the next, with an instant animation */
+function openStep(k){
+  if(!S.enrolled.includes(k))return;const n=prg(k);if(n>5)return;const c=cInfo(k);
+  vrs(k)[n]={t:Date.now()};save();fxK=k;fxI=n;
+  vLearn();
+  if(n===5)celebrate(k,c);else toast(LST[n][0]+' complete');
+}
+function fxRun(){
+  const v=$('#v-learn');v.classList.toggle('adv',fxK!==null);
+  if(fxK===null)return;
+  const k=fxK,i=fxI;fxK=null;
+  const p=$$('.panel[data-k]',v).find(x=>x.dataset.k===k);if(!p)return;
+  const n=prg(k),from=i/6*100,to=n/6*100,b=$('.bar i',p),pc=$('.pc',p);
+  p.classList.remove('sc-hl');void p.offsetWidth;p.classList.add('sc-hl');
+  if(reduce)return;
+  b.style.width=from+'%';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{b.style.width=to+'%'}));
+  const s=performance.now();(function f(t){const q=Math.min(1,(t-s)/450);pc.textContent=Math.round(from+(to-from)*q)+'%';q<1&&requestAnimationFrame(f)})(s);
+  const li=$('.tl li.fx',p);li&&li.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+function celebrate(k,c){
+  mdl(`<div class="cg"><div class="bd"><svg viewBox="0 0 48 48" width="52" height="52" fill="none" stroke="#000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 25l8 8 16-18"/></svg></div><h2 class="h2">Congratulations, ${esc(S.user.name.split(' ')[0])}!</h2><p class="muted">You passed every step of <b>${esc(c.t)}</b>. Your certificate is ready.</p><div class="acts" style="justify-content:center"><button class="btn sm" data-x="cert:png:${k}">Download image</button><button class="btn dark sm" data-x="cert:jpg:${k}">JPG</button><button class="btn dark sm" data-x="cert:pdf:${k}">Download PDF</button></div><div class="acts" style="justify-content:center"><button class="btn dark sm" data-mc>Close</button></div></div>`);
+  burst();setTimeout(burst,900);setTimeout(burst,1800);
+}
+
+/* global clicks */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-go],[data-back],[data-f],[data-ap],[data-out],[data-want],[data-en],[data-adv],[data-tr]');if(!t)return;
+  if(t.tagName==='A')e.preventDefault();const d=t.dataset;
+  if(d.adv)return openStep(d.adv);
+  if(d.tr)return go('learn');
+  if(d.f){S.pref.field=d.f;save();return go(cur,true)}
+  if('back' in d)return go(hist.pop()||'home',true);
+  if(d.go)return go(d.go);
+  if(d.ap){const id=+d.ap;S.mode=S.mode||'manual';S.applied.push(id);toast('Application sent to '+J(id).co);return start(id)}
+  if(d.out){S.out=d.out;if(d.out==='placed'){S.stage=4;burst()}save();return vTrack()}
+  if(d.want){S.want=+d.want;save();return go('courses')}
+  if(d.en){const i=S.enrolled.indexOf(d.en);if(i<0){S.enrolled.push(d.en);(S.prog=S.prog||{})[d.en]=1;(S.vr=S.vr||{})[d.en]={}}else{S.enrolled.splice(i,1);S.prog&&delete S.prog[d.en];S.vr&&delete S.vr[d.en]}save();go(cur,true);toast(i<0?'Enrolled. Track it in My learning.':'You left the course.')}
+});
+$$('.signin').forEach(b=>b.onclick=()=>S.user?logout():(authMode='in',go('auth')));
+
+/* mobile menu */
+const burger=$('#burger'),menu=$('.menu'),ov=$('.overlay');
+function setMenu(o){burger.setAttribute('aria-expanded',o);menu.hidden=ov.hidden=!o;document.body.classList.toggle('menu-open',o)}
+function closeMenu(){setMenu(false)}
+burger.onclick=()=>setMenu(burger.getAttribute('aria-expanded')!=='true');
+ov.onclick=closeMenu;
+document.addEventListener('keydown',e=>e.key==='Escape'&&closeMenu());
+addEventListener('resize',()=>innerWidth>720&&closeMenu());
+
+/* stats count-up */
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;io.disconnect();
+  $$('.val').forEach((el,i)=>{
+    const t=+el.dataset.t,d=+el.dataset.d,sf=el.dataset.s,dur=1500+i*80;
+    if(reduce)return el.textContent=t.toFixed(d)+sf;
+    setTimeout(()=>{const s=performance.now();(function f(n){const p=Math.min(1,(n-s)/dur);el.textContent=(t*(1-Math.pow(1-p,3))).toFixed(d)+sf;p<1&&requestAnimationFrame(f)})(s)},480+i*90);
+  });
+}),{threshold:.25});
+io.observe($('.stats'));
+
+/* ===== v2: why-score, cockpit, resubmit, report, badge, vernacular + voice ===== */
+const LANGS=[['en','English','en-IN'],['hi','हिंदी','hi-IN'],['ta','தமிழ்','ta-IN'],['kn','ಕನ್ನಡ','kn-IN'],['te','తెలుగు','te-IN'],['ml','മലയാളം','ml-IN'],['bn','বাংলা','bn-IN'],['mr','मराठी','mr-IN']];
+const VM={teaching:/शिक्षण|पढ़ा|अध्यापक|கற்பி|ஆசிரியர்|ಬೋಧ|ಶಿಕ್ಷಕ/,nursing:/नर्स|செவிலிய|ನರ್ಸ್|ದಾದಿ/,'patient care':/मरीज|நோயாளி|ರೋಗಿ/,accounting:/लेखा|हिसाब|கணக்கு|ಲೆಕ್ಕ/,excel:/एक्सेल|எக்செல்|ಎಕ್ಸೆಲ್/,sales:/बिक्री|விற்பனை|ಮಾರಾಟ/,'customer service':/ग्राहक|வாடிக்கையாளர்|ಗ್ರಾಹಕ/,communication:/संवाद|बातचीत|தொடர்பு|ಸಂವಹನ/,python:/पाइथन|पायथन|பைதான்|ಪೈಥಾನ್/,'content writing':/लेखन|எழுத்து|ಬರವಣಿಗೆ/};
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+const addSk=a=>{S.skills=[...new Set([...S.skills,...a])];S.demo=0;S.score=Math.min(94,38+S.skills.length*7);save()};
+const voiceSkills=t=>{const l=t.toLowerCase();return SK.filter(s=>new RegExp('\\b'+s+'\\b').test(l)||(VM[s]&&VM[s].test(t)))};
+function reeval(a){const o=S.score;addSk(a);toast('Re-evaluated: '+o+' to '+S.score+'/100');S.job?start(S.job):go('bot')}
+function mic(){if(!SR)return toast('Voice input needs Chrome or Edge');const r=new SR();r.lang=(LANGS.find(l=>l[0]===(LG()))||LANGS[0])[2];$('#vt').textContent='Listening…';$('[data-x=mic]').classList.add('air');
+  r.onresult=e=>{const t=e.results[0][0].transcript;$('#vt').textContent='Heard: '+t;const a=voiceSkills(t);if(!a.length)return toast('No skills heard. Try “teaching”, “Excel” or the word in your language');addSk(a);res();toast(a.length+' skills added by voice')};
+  r.onerror=()=>{$('#vt').textContent='Could not hear you. Check the mic permission and try again.'};r.onend=()=>{const m=$('[data-x=mic]');m&&m.classList.remove('air')};r.start()}
+const FH=()=>{const c=[['Skills-only matching',1],['No protected attributes collected',1],['Plain-language score explanation',1],['Live application tracking',1],['Edit and resubmit with proof',1],['Vernacular and voice input',1],['Independent bias audit',0]];let h=5381;(S.user.email+S.score+S.skills.join()).split('').forEach(x=>h=(h*33+x.charCodeAt(0))>>>0);return{c,s:Math.round(100*c.filter(x=>x[1]).length/c.length),id:'FH-'+h.toString(36).toUpperCase()}};
+const whyHTML=()=>{const m=matches(),ms=missing(m.slice(0,4)).slice(0,4);return `<div class="panel"><h2 class="h2">Why this score</h2><p class="muted">You get 38 points for a readable resume and 7 for each skill we found: ${S.skills.length} × 7 = ${S.skills.length*7}, capped at 94. Only skills count. Your name, gender, age, caste, religion, disability and college never change your score.</p><h3>Skills we matched</h3><div class="chips">${S.skills.map(s=>`<span>${cap(s)}${S.proof&&S.proof[s]?' ✓':''}</span>`).join('')}</div><p class="muted">✓ means you added proof.</p><h3>Skills your top jobs ask for that we did not find</h3>${ms.length?`<ul class="sg">${ms.map(([s,n])=>`<li><b>${cap(s)}</b> is needed in ${n} of your top matches.</li>`).join('')}</ul>`:'<p class="muted">Nothing missing for your top matches.</p>'}<h3>How your top jobs were matched</h3><ul class="sg">${m.slice(0,3).map(j=>{const n=j.sk.filter(s=>S.skills.includes(s)).length;return `<li>${j.role} at ${j.co}: ${n} of ${j.sk.length} skills, so 40 + 60 × ${n}/${j.sk.length} = ${j.p}%</li>`}).join('')}</ul></div>`};
+const fhHTML=()=>{const f=FH();return `<div class="panel"><h3>Fair Hiring badge and compliance report</h3><div class="row"><div><p class="muted">Fair Hiring score</p><h2 class="h2">${f.s}/100</h2></div><div class="bar"><i style="width:${f.s}%"></i></div></div><ul class="sg">${f.c.map(c=>`<li>${c[1]?'✓':'○'} ${c[0]}${c[1]?'':' (pending)'}</li>`).join('')}</ul><p class="muted note">Verification ID ${f.id}. In this prototype the ID is made in your browser. A live version would verify it on a server so companies can show the badge publicly.</p><div class="seg"><button data-x="pdf">Download compliance report (PDF)</button><button data-x="badge">Copy badge</button></div></div>`};
+let ckSeen='';
+const cockpitHTML=()=>{const j=J(S.job),h=j.sk.filter(x=>S.skills.includes(x)),g=j.sk.filter(x=>!S.skills.includes(x)),p=pct(j),key=S.job+'|'+(S.at&&S.at[0]),first=ckSeen!==key;ckSeen=key;
+  const T=i=>i>S.stage?'':S.at&&S.at[i]?new Date(S.at[i]).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'',rej=S.out==='rejected',ok=S.out==='placed';
+  const st=[['Received','Reached '+j.co],['Screened',h.length+' of '+j.sk.length+' skills matched'],['Reviewed','Hiring team is reviewing'],['Decided',ok?'You were selected':rej?'Not selected. Upskill and resubmit':'Waiting for the result']];
+  return `<div class="panel${first?'':' ck-still'}"${first?'':' style="animation:none"'}><div class="ck-top">${cLogo(j.co,46)}<div class="tt"><b>${j.role}</b><span>${j.co}</span></div><span class="ck-pill${ok?' ok':''}">${ok?'Selected':rej?'Not selected':S.stage>=3?'Awaiting decision':'In progress'}</span></div>
+  <div class="ck-stats"><svg class="ck-ring" viewBox="0 0 80 80" width="80" height="80" aria-label="Match ${p}%"><circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="6"/><circle class="rg" cx="40" cy="40" r="34" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="${(213.6*(1-p/100)).toFixed(1)}" transform="rotate(-90 40 40)"/><text x="40" y="46" text-anchor="middle" fill="#fff" font-size="20" font-family="Doto,monospace">${p}%</text></svg>
+  <div class="ck-tile"><b>${h.length}/${j.sk.length}</b><small>Skills matched</small></div><div class="ck-tile"><b>${Math.min(S.stage+1,4)}/4</b><small>Stage</small></div></div>
+  <ul class="ck-line">${st.map((x,i)=>{const done=i<S.stage||ok,now=i===S.stage&&!S.out,bad=i===3&&rej;return `<li class="${done?'done':''}${bad?' x':''}"><span class="nd${now?' now':''}">${done?'✓':bad?'×':''}</span><div class="rw2"><span>${x[0]}</span><small>${T(i)}</small></div><p>${x[1]}</p></li>`}).join('')}</ul>
+  ${g.length?`<p class="muted" style="margin-top:16px">Skills to add</p><div class="chips">${g.slice(0,3).map(x=>`<span>${cap(x)}</span>`).join('')}</div>`:''}
+  <div class="seg" style="margin-top:16px"><button data-go="bot">Why this score</button></div></div>`};
+const resubHTML=()=>`<div class="panel"><h2 class="h2">Edit and resubmit</h2><p class="muted">Not happy with the decision? Update your resume or add proof of a skill. We re-score you and run the application again.</p><label class="drop"><span class="gi">↑</span><span>Upload an updated resume</span><input type="file" id="rf2" accept=".pdf,.doc,.docx,.txt" hidden></label><input id="px-s" list="px-l" placeholder="Skill you can prove, e.g. excel"><datalist id="px-l">${SK.map(s=>`<option value="${s}">`).join('')}</datalist><input id="px-p" placeholder="Proof: certificate link or short note"><div class="seg"><button data-x="proof">Add proof and re-evaluate</button></div></div>`;
+const wrap=L=>L.flatMap(l=>l.match(/.{1,90}(?:\s|$)/g)||['']);
+const mkPdf=L=>{const pg=[];for(let i=0;i<L.length;i+=48)pg.push(L.slice(i,i+48));const ob=[];ob[1]='<</Type/Catalog/Pages 2 0 R>>';ob[2]=`<</Type/Pages/Count ${pg.length}/Kids[${pg.map((_,i)=>(4+i*2)+' 0 R').join(' ')}]>>`;ob[3]='<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>';
+  pg.forEach((p,i)=>{const t='BT /F1 10 Tf 40 800 Td 15 TL\n'+p.map(l=>'('+l.replace(/[^\x20-\x7e]/g,'?').replace(/[\\()]/g,'\\$&')+') Tj T*').join('\n')+'\nET';ob[4+i*2]=`<</Type/Page/Parent 2 0 R/MediaBox[0 0 595 842]/Resources<</Font<</F1 3 0 R>>>>/Contents ${5+i*2} 0 R>>`;ob[5+i*2]=`<</Length ${t.length}>>\nstream\n${t}\nendstream`});
+  let s='%PDF-1.4\n';const x=[];for(let i=1;i<ob.length;i++){x[i]=s.length;s+=i+' 0 obj\n'+ob[i]+'\nendobj\n'}const r=s.length;s+=`xref\n0 ${ob.length}\n0000000000 65535 f \n`+x.slice(1).map(v=>String(v).padStart(10,'0')+' 00000 n \n').join('')+`trailer\n<</Size ${ob.length}/Root 1 0 R>>\nstartxref\n${r}\n%%EOF`;return new Blob([s],{type:'application/pdf'})};
+const rep=()=>{const ms=missing(matches().slice(0,4)).map(x=>x[0]),f=FH();return['FAIR HIRING COMPLIANCE REPORT','Intelligence Designed To Evolve','Generated: '+new Date().toLocaleDateString('en-IN'),'Applicant: '+S.user.name+' ('+S.user.email+')','Verification ID: '+f.id+'   Fair Hiring score: '+f.s+'/100','','1. HOW THIS APPLICANT WAS SCORED','Resume score: '+S.score+'/100 = min(94, 38 + 7 x '+S.skills.length+' skills found).','Skills matched: '+S.skills.join(', '),'Skills missing for top matches: '+(ms.join(', ')||'none'),'Skills backed by proof: '+(Object.keys(S.proof||{}).join(', ')||'none'),'','2. FAIRNESS CHECKS',...f.c.map(c=>(c[1]?'[PASS] ':'[PENDING] ')+c[0]),'','3. MAPPING TO GUIDELINES','NITI Aayog Principles for Responsible AI - transparency: score and match formulas are shown in plain language.','NITI Aayog - equality and non-discrimination: only skills are used. Name, gender, age, caste, religion, disability and college are not inputs.','NITI Aayog - accountability: the applicant can edit, add proof and trigger re-evaluation.','India DPDP Act 2023 - data principal rights: reset progress and delete account are in Settings. Data is limited to name, email and resume skills.','NYC Local Law 144 (automated employment decision tools) - bias audit: NOT yet done. Required before production use.','','4. LIMITATIONS','Prototype: scores, applications and the verification ID are generated in the browser. This report is a self-assessment, not a legal certification.']};
+const _go=go;go=function(v,b){if(v!=='track')ckSeen='';_go(v,b);applyLang()};
+const _vb=vBot;vBot=function(){_vb();const l=LG();$('#v-bot .panel').insertAdjacentHTML('afterend',`<div class="panel"><h3>Language and voice</h3><p class="muted">Choose your language and speak your skills instead of uploading a resume. Menus switch to Hindi, Tamil and Kannada. Voice works in all eight.</p><div class="seg">${LANGS.map(x=>`<button data-x="lang:${x[0]}" class="${l===x[0]?'on':''}">${x[1]}</button>`).join('')}</div><div class="seg"><button data-x="mic">Speak your skills</button></div><p class="muted" id="vt"></p></div>`);applyLang()};
+const _r2=res;res=function(){_r2();$('#res').insertAdjacentHTML('beforeend',whyHTML()+fhHTML())};
+const _vt=vTrack;vTrack=function(){_vt();if(J(S.job))$('#v-track').insertAdjacentHTML('beforeend',cockpitHTML()+resubHTML())};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-x]');if(!t)return;const[k,v,w]=t.dataset.x.split(':');if(k==='cert')return certDl(w,v);
+  if(k==='lang')return setLang(v);
+  if(k==='mic')return mic();
+  if(k==='pdf'){const a=document.createElement('a');a.href=URL.createObjectURL(mkPdf(wrap(rep())));a.download='fair-hiring-report.pdf';a.click();return toast('Report downloaded')}
+  if(k==='badge'){const f=FH();return navigator.clipboard.writeText('Fair Hiring Verified | '+f.s+'/100 | ID '+f.id).then(()=>toast('Badge text copied'),()=>toast('Copy was blocked by the browser'))}
+  if(k==='proof'){const s=($('#px-s').value||'').trim().toLowerCase(),p=($('#px-p').value||'').trim();if(!s)return toast('Enter a skill first');(S.proof=S.proof||{})[s]=p||'self-declared';reeval([s])}
+});
+document.addEventListener('change',async e=>{if(e.target.id!=='rf2'||!e.target.files[0])return;const t=(await e.target.files[0].text().catch(()=>'')).toLowerCase(),a=SK.filter(s=>new RegExp('\\b'+s+'\\b').test(t));a.length?reeval(a):toast('Could not read skills from this file. Add proof of a skill instead.')});
+
+const I18N={
+en:{nav:['Home','Resume Bot','Jobs','Courses'],in:'Sign in',out:'Sign out',trust:'Trusted by 2000+ Enterprises',h1:['Intelligence','Designed To Evolve'],sub:'Upload your resume and our AI bot scans it, matches real jobs, applies for you and stays with you until you’re hired.',cta:'Get Started',jobs:'Jobs for',rw:['developers','teachers','nurses','designers','accountants','marketers','engineers','tutors','recruiters'],part:'In partnership with leading hiring teams',st:['Resume Scan Time','Platform Uptime','Auto-Apply Bot','Jobs Matched']},
+hi:{nav:['होम','रिज़्यूमे बॉट','नौकरियाँ','कोर्स'],in:'साइन इन',out:'साइन आउट',trust:'2000+ उद्यमों का भरोसा',h1:['बुद्धिमत्ता','जो विकसित होने के लिए बनी है'],sub:'अपना रिज़्यूमे अपलोड करें। हमारा AI बॉट उसे स्कैन करता है, असली नौकरियाँ ढूँढता है, आपकी ओर से आवेदन करता है और नौकरी मिलने तक आपके साथ रहता है।',cta:'शुरू करें',jobs:'नौकरियाँ:',rw:['डेवलपर्स','शिक्षक','नर्स','डिज़ाइनर','अकाउंटेंट','मार्केटर','इंजीनियर','ट्यूटर','रिक्रूटर'],part:'अग्रणी हायरिंग टीमों के साथ साझेदारी में',st:['रिज़्यूमे स्कैन समय','प्लेटफ़ॉर्म अपटाइम','ऑटो-अप्लाई बॉट','मिलान की गई नौकरियाँ']},
+ta:{nav:['முகப்பு','ரெஸ்யூம் பாட்','வேலைகள்','படிப்புகள்'],in:'உள்நுழை',out:'வெளியேறு',trust:'2000+ நிறுவனங்களின் நம்பிக்கை',h1:['நுண்ணறிவு','வளர்ச்சிக்காக வடிவமைக்கப்பட்டது'],sub:'உங்கள் ரெஸ்யூமை பதிவேற்றுங்கள். எங்கள் AI பாட் அதை ஸ்கேன் செய்து, உண்மையான வேலைகளைப் பொருத்தி, உங்கள் சார்பாக விண்ணப்பித்து, வேலை கிடைக்கும் வரை உங்களுடன் இருக்கும்.',cta:'தொடங்குங்கள்',jobs:'வேலைகள்:',rw:['டெவலப்பர்கள்','ஆசிரியர்கள்','செவிலியர்கள்','வடிவமைப்பாளர்கள்','கணக்காளர்கள்','சந்தைப்படுத்துநர்கள்','பொறியாளர்கள்','பயிற்றுநர்கள்','ஆட்சேர்ப்பாளர்கள்'],part:'முன்னணி பணியமர்த்தல் குழுக்களுடன் கூட்டாண்மையில்',st:['ரெஸ்யூம் ஸ்கேன் நேரம்','தளத்தின் இயக்க நேரம்','தானியங்கி விண்ணப்ப பாட்','பொருத்தப்பட்ட வேலைகள்']},
+kn:{nav:['ಮುಖಪುಟ','ರೆಸ್ಯೂಮೆ ಬಾಟ್','ಉದ್ಯೋಗಗಳು','ಕೋರ್ಸ್‌ಗಳು'],in:'ಸೈನ್ ಇನ್',out:'ಸೈನ್ ಔಟ್',trust:'2000+ ಉದ್ಯಮಗಳ ವಿಶ್ವಾಸ',h1:['ಬುದ್ಧಿಮತ್ತೆ','ವಿಕಸನಕ್ಕಾಗಿ ರೂಪಿಸಲಾಗಿದೆ'],sub:'ನಿಮ್ಮ ರೆಸ್ಯೂಮೆ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ. ನಮ್ಮ AI ಬಾಟ್ ಅದನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ, ನಿಜವಾದ ಉದ್ಯೋಗಗಳನ್ನು ಹೊಂದಿಸಿ, ನಿಮ್ಮ ಪರವಾಗಿ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ, ಕೆಲಸ ಸಿಗುವವರೆಗೂ ನಿಮ್ಮೊಂದಿಗೆ ಇರುತ್ತದೆ.',cta:'ಪ್ರಾರಂಭಿಸಿ',jobs:'ಉದ್ಯೋಗಗಳು:',rw:['ಡೆವಲಪರ್‌ಗಳು','ಶಿಕ್ಷಕರು','ನರ್ಸ್‌ಗಳು','ಡಿಸೈನರ್‌ಗಳು','ಲೆಕ್ಕಿಗರು','ಮಾರ್ಕೆಟರ್‌ಗಳು','ಇಂಜಿನಿಯರ್‌ಗಳು','ಟ್ಯೂಟರ್‌ಗಳು','ರಿಕ್ರೂಟರ್‌ಗಳು'],part:'ಪ್ರಮುಖ ನೇಮಕಾತಿ ತಂಡಗಳ ಸಹಭಾಗಿತ್ವದಲ್ಲಿ',st:['ರೆಸ್ಯೂಮೆ ಸ್ಕ್ಯಾನ್ ಸಮಯ','ಪ್ಲಾಟ್‌ಫಾರ್ಮ್ ಅಪ್‌ಟೈಮ್','ಆಟೋ-ಅಪ್ಲೈ ಬಾಟ್','ಹೊಂದಿಸಿದ ಉದ್ಯೋಗಗಳು']}};
+const LG=()=>(S&&S.lang)||LS.get('rb_lang')||'en';
+function setLang(v){S.lang=v;LS.set('rb_lang',v);if(S.user)save();applyLang();if(cur==='bot'&&S.user)vBot()}
+function applyLang(){const l=LG(),t=I18N[l]||I18N.en,set=(q,v)=>$$(q).forEach(e=>e.textContent=v);document.documentElement.lang=l;
+  ['home','bot','jobs','courses'].forEach((g,i)=>$$('a[data-go="'+g+'"]').forEach(a=>a.textContent=t.nav[i]));
+  $$('.signin').forEach(b=>b.textContent=S.user?t.out:t.in);
+  set('#v-home .tpill',t.trust);set('#v-home .headline span:first-child',t.h1[0]);set('#v-home .headline span:last-child',t.h1[1]);set('#v-home .sub',t.sub);set('#v-home .cta',t.cta);set('#v-home .partners p',t.part);
+  $$('#v-home .stat small').forEach((e,i)=>e.textContent=t.st[i]);
+  const r=$('#v-home .roles');if(r&&r.firstChild)r.firstChild.nodeValue=t.jobs+' ';
+  RW.splice(0,RW.length,...t.rw);const b=$('#rw');if(b)b.textContent=RW[rwi%RW.length];
+  $$('.lang').forEach(s=>s.value=I18N[l]?l:'en')}
+document.addEventListener('change',e=>{if(e.target.classList.contains('lang'))setLang(e.target.value)});
+$$('.trust .av .in').forEach((e,i)=>e.innerHTML=logoImg(['Microsoft','Amazon','Google'][i]));
+setTimeout(applyLang,0);
+setTimeout(()=>{if(!$('#cb').hidden)return;document.body.insertAdjacentHTML('beforeend','<div class="cb-tip" id="cbt">Hi, I’m Evo. Ask me anything</div>');setTimeout(()=>{const t=$('#cbt');t&&t.remove()},9000)},3500);
+document.addEventListener('click',e=>{const t=$('#cbt');if(!t)return;if(e.target===t){t.remove();$('#cbf').click()}else if(e.target.closest('#cbf'))t.remove()});
+/* ===== creative course cards, spotlight and aurora ===== */
+const IC={code:'<path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/>',cloud:'<path d="M17.5 19a4.5 4.5 0 1 0-1.4-8.8A6 6 0 0 0 4.5 12 3.5 3.5 0 0 0 6 19z"/>',users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',clipboard:'<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M9 12h6M9 16h4"/>',sigma:'<path d="M18 7V4H6l6 8-6 8h12v-3"/>',mic:'<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3"/>',monitor:'<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',heart:'<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/><path d="M3.2 12h4l2-3 3 6 2-3h6.6"/>',flask:'<path d="M10 2v7.5L4.5 19a2 2 0 0 0 1.7 3h11.6a2 2 0 0 0 1.7-3L14 9.5V2M8.5 2h7M7 16h10"/>',table:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>',briefcase:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2M2 13h20"/>',userplus:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>',search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',kanban:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7v7M12 7v4M16 7v10"/>',file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/>',message:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',spark:'<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/>',ruler:'<path d="M21.3 8.7 8.7 21.3a1 1 0 0 1-1.4 0L2.7 16.7a1 1 0 0 1 0-1.4L15.3 2.7a1 1 0 0 1 1.4 0l4.6 4.6a1 1 0 0 1 0 1.4zM7.5 10.5l2 2M10.5 7.5l2 2M13.5 4.5l2 2M4.5 13.5l2 2"/>'};
+const svgI=n=>`<svg viewBox="0 0 24 24" width="55%" height="55%" fill="none" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||IC.spark}</svg>`;
+const ICN=['code','code','cloud','code','users','clipboard','sigma','mic','monitor','heart','flask','table','table','briefcase','userplus','search','share','spark','kanban','ruler','file','message'];
+const BR={react:{vb:'0 0 24 24',b:'<g fill="none" stroke="#149ECA" stroke-width="1.1"><ellipse cx="12" cy="12" rx="11" ry="4.2"/><ellipse cx="12" cy="12" rx="11" ry="4.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="11" ry="4.2" transform="rotate(120 12 12)"/></g><circle cx="12" cy="12" r="2.1" fill="#149ECA"/>'},python:{vb:'0 0 24 24',b:'<path fill="#3776AB" d="M11.9 1C6.6 1 6.9 3.3 6.9 3.3v2.4h5.2v.7H4.8S1.4 6 1.4 11.4s3 5.2 3 5.2h1.8v-2.5s-.1-3 2.9-3h5.1s2.8 0 2.8-2.7V4s.4-3-4.1-3zM9.2 2.7a.9.9 0 1 1 0 1.8.9.9 0 0 1 0-1.8z"/><path fill="#FFD43B" d="M12.1 23c5.3 0 5-2.3 5-2.3v-2.4h-5.2v-.7h7.3s3.4.4 3.4-5-3-5.2-3-5.2h-1.8v2.5s.1 3-2.9 3H9.9s-2.8 0-2.8 2.7V20s-.4 3 5 3zm2.7-1.7a.9.9 0 1 1 0-1.8.9.9 0 0 1 0 1.8z"/>'},figma:{vb:'0 0 38 57',b:'<path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z" fill="#0ACF83"/><path d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z" fill="#FF7262"/><path d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z" fill="#F24E1E"/><path d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z" fill="#A259FF"/>'}};
+const bSvg=b=>`<svg viewBox="${BR[b].vb}" width="62%" height="62%" aria-hidden="true">${BR[b].b}</svg>`;
+const markSvg=(b,z)=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${BR[b].vb}" width="${z}" height="${z}">${BR[b].b}</svg>`;
+const lineSvg=(n,z)=>'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="'+z+'" height="'+z+'" fill="none" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+(IC[n]||IC.spark)+'</svg>';
+const CD={0:'react',1:'python',17:'figma'};
+const SKI={teaching:'users',nursing:'heart','patient care':'heart',accounting:'table',tally:'table',gst:'table',excel:'table',sales:'briefcase',communication:'message','customer service':'message',seo:'search','content writing':'file',autocad:'ruler','project management':'kanban',operations:'kanban',javascript:'code',html:'code',css:'code',python:'code',react:'code',sql:'table',git:'code'};
+const SKD={react:'react',python:'python',figma:'figma'};
+const cIco=(n,b)=>b?bSvg(b):svgI(n);
+document.body.insertAdjacentHTML('afterbegin','<div class="aur" aria-hidden="true"></div>');
+document.addEventListener('pointermove',e=>{const c=e.target.closest&&e.target.closest('.panel,.cc');if(!c)return;const r=c.getBoundingClientRect();c.style.setProperty('--mx',e.clientX-r.left+'px');c.style.setProperty('--my',e.clientY-r.top+'px')});
+/* ===== course certificate: PNG / JPG / PDF ===== */
+const OUT={Tech:['Built and shipped a hands-on project','Practised coding and debugging workflows','Prepared for technical interviews'],Teaching:['Designed engaging, structured lessons','Practised classroom and delivery techniques','Learned to assess and support every learner'],Healthcare:['Applied safe, compassionate care practices','Practised clear patient communication','Followed standard safety protocols'],Finance:['Handled real accounting and reporting tasks','Worked with industry-standard tools','Built accuracy and compliance habits'],Business:['Practised people and client conversations','Learned structured sales and hiring methods','Completed a role-based mock interview'],Marketing:['Planned content and audience strategy','Learned search and social fundamentals','Measured results with simple metrics'],Design:['Designed screens with clear user flows','Built reusable components and layouts','Presented a portfolio-ready project'],Operations:['Planned and tracked work with proven methods','Read and produced technical drawings','Managed time, scope and quality'],Any:['Wrote a sharper resume','Practised confident interviews','Communicated clearly at work']};
+const wrapT=(g,t,mw)=>{const L=[];let l='';t.split(' ').forEach(x=>{const m=l?l+' '+x:x;if(g.measureText(m).width>mw&&l){L.push(l);l=x}else l=m});L.push(l);return L};
+async function certCanvas(k){
+  const c=cInfo(k),W=1600,H=1131,cv=document.createElement('canvas');cv.width=W;cv.height=H;const g=cv.getContext('2d'),cx=W/2,F='Inter,"Segoe UI",system-ui,sans-serif',D='Doto,"Courier New",monospace';
+  await Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,800))]);
+  const m=/^c(\d+)$/.exec(k),sk=k.replace(/^\d+/,''),nm=m?ICN[+m[1]]:(SKI[sk]||'spark'),br=m?CD[+m[1]]:SKD[sk],date=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  let h=5381;(S.user.email+k+date).split('').forEach(x=>h=(h*33+x.charCodeAt(0))>>>0);
+  g.fillStyle='#000';g.fillRect(0,0,W,H);
+  let r=g.createRadialGradient(cx,0,50,cx,0,900);r.addColorStop(0,'rgba(255,255,255,.16)');r.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=r;g.fillRect(0,0,W,H);
+  r=g.createRadialGradient(W,H,50,W,H,700);r.addColorStop(0,'rgba(150,160,255,.14)');r.addColorStop(1,'rgba(150,160,255,0)');g.fillStyle=r;g.fillRect(0,0,W,H);
+  const rr=(x,y,w,hh,q)=>{g.beginPath();g.roundRect?g.roundRect(x,y,w,hh,q):g.rect(x,y,w,hh)};
+  g.lineWidth=2;g.strokeStyle='rgba(255,255,255,.35)';rr(48,48,W-96,H-96,36);g.stroke();g.strokeStyle='rgba(255,255,255,.12)';rr(68,68,W-136,H-136,26);g.stroke();
+  g.fillStyle='#fff';g.beginPath();g.arc(150,140,34,0,7);g.fill();g.strokeStyle='#000';g.lineWidth=6;g.beginPath();g.arc(150,140,19,0,7);g.stroke();g.fillStyle='#000';g.beginPath();g.arc(150,140,6,0,7);g.fill();
+  g.textBaseline='alphabetic';g.fillStyle='#fff';g.font='600 26px '+F;g.textAlign='left';g.fillText('Intelligence Designed To Evolve',200,149);
+  g.save();g.shadowColor='rgba(255,255,255,.28)';g.shadowBlur=34;g.fillStyle='#fff';g.beginPath();g.arc(W-160,165,66,0,7);g.fill();g.restore();
+  const im=new Image();await new Promise(z=>{im.onload=z;im.onerror=z;im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(br?markSvg(br,96):lineSvg(nm,96))});g.drawImage(im,W-160-46,165-46,92,92);
+  g.textAlign='center';g.fillStyle='#c4c2c3';g.font='600 26px '+F;if('letterSpacing' in g)g.letterSpacing='10px';g.fillText('CERTIFICATE OF COMPLETION',cx,295);if('letterSpacing' in g)g.letterSpacing='0px';
+  g.fillStyle='#8e8e8e';g.font='28px '+F;g.fillText('This certifies that',cx,360);
+  g.fillStyle='#fff';g.font='84px '+D;g.fillText(S.user.name,cx,455);g.strokeStyle='rgba(255,255,255,.4)';g.lineWidth=2;g.beginPath();g.moveTo(cx-380,482);g.lineTo(cx+380,482);g.stroke();
+  g.fillStyle='#8e8e8e';g.font='28px '+F;g.fillText('has successfully completed',cx,540);
+  g.fillStyle='#fff';g.font='600 54px '+F;const L=wrapT(g,c.t,1200);L.forEach((x,i)=>g.fillText(x,cx,615+i*64));const my=615+(L.length-1)*64+52;
+  g.fillStyle='#c4c2c3';g.font='26px '+F;g.fillText(c.w+' weeks  ·  '+c.f,cx,my);
+  const O=OUT[c.f==='Any field'?'Any':c.f]||OUT.Any;g.font='22px '+F;
+  O.forEach((t,i)=>{const x=250+i*400;g.textAlign='left';g.fillStyle='#fff';g.fillText('✓',x,780);g.fillStyle='#c4c2c3';wrapT(g,t,300).forEach((l,j)=>g.fillText(l,x+30,780+j*30))});
+  /* seal + signatures */
+  const sy=918,sig=(x,t,pts)=>{g.strokeStyle='#fff';g.lineWidth=3;g.lineCap='round';g.lineJoin='round';g.beginPath();g.moveTo(x-90,sy+8);pts.forEach(q=>g.bezierCurveTo(x+q[0],sy+q[1],x+q[2],sy+q[3],x+q[4],sy+q[5]));g.stroke();g.strokeStyle='rgba(255,255,255,.4)';g.lineWidth=2;g.beginPath();g.moveTo(x-140,sy+34);g.lineTo(x+140,sy+34);g.stroke();g.fillStyle='#c4c2c3';g.font='600 18px '+F;g.textAlign='center';if('letterSpacing' in g)g.letterSpacing='3px';g.fillText(t[0],x,sy+64);if('letterSpacing' in g)g.letterSpacing='0px';};
+  sig(cx-430,['LEAD MENTOR','Mentor review and sign-off'],[[-60,-52,-40,30,-20,-18],[-6,-40,10,10,26,-12],[40,-34,50,16,70,-8],[84,-20,96,-4,100,4]]);
+  sig(cx+430,['PROGRAMME DIRECTOR','Intelligence Designed To Evolve'],[[-70,-30,-52,-44,-34,-8],[-22,26,-8,-50,8,-14],[26,12,40,-34,58,-10],[72,6,86,-6,98,-2]]);
+  g.save();g.shadowColor='rgba(255,255,255,.22)';g.shadowBlur=30;g.fillStyle='#fff';g.beginPath();g.arc(cx,sy,40,0,7);g.fill();g.restore();
+  g.strokeStyle='rgba(255,255,255,.55)';g.lineWidth=2;g.beginPath();g.arc(cx,sy,74,0,7);g.stroke();g.lineWidth=1.5;g.strokeStyle='rgba(255,255,255,.25)';g.beginPath();g.arc(cx,sy,48,0,7);g.stroke();
+  g.setLineDash([2,7]);g.strokeStyle='rgba(255,255,255,.5)';g.beginPath();g.arc(cx,sy,44,0,7);g.stroke();g.setLineDash([]);
+  g.strokeStyle='#000';g.lineWidth=7;g.lineCap='round';g.lineJoin='round';g.beginPath();g.moveTo(cx-15,sy+2);g.lineTo(cx-4,sy+14);g.lineTo(cx+17,sy-13);g.stroke();
+  {const T='  COMPLETED  ·  VERIFIED  ·  CERTIFIED  ·  ',n2=T.length;g.fillStyle='#c4c2c3';g.font='600 12px '+F;g.textAlign='center';for(let i=0;i<n2;i++){const an=-Math.PI/2+i/n2*Math.PI*2;g.save();g.translate(cx+Math.cos(an)*61,sy+Math.sin(an)*61);g.rotate(an+Math.PI/2);g.fillText(T[i],0,0);g.restore()}}
+  g.fillStyle='#8e8e8e';g.font='22px '+F;g.textAlign='left';g.fillText('Certificate ID  CERT-'+h.toString(36).toUpperCase(),110,1046);g.textAlign='right';g.fillText('Issued '+date,W-110,1046);
+  return cv}
+const imgPdf=(j,w,h)=>{const W=842,H=Math.round(842*h/w),P=[],o=[];let len=0;const add=b=>{if(typeof b==='string')b=new TextEncoder().encode(b);P.push(b);len+=b.length},ob=(n,s)=>{o[n]=len;add(n+' 0 obj\n'+s+'\nendobj\n')};
+  add('%PDF-1.4\n');ob(1,'<</Type/Catalog/Pages 2 0 R>>');ob(2,'<</Type/Pages/Count 1/Kids[3 0 R]>>');ob(3,`<</Type/Page/Parent 2 0 R/MediaBox[0 0 ${W} ${H}]/Resources<</XObject<</Im 4 0 R>>>>/Contents 5 0 R>>`);
+  o[4]=len;add(`4 0 obj\n<</Type/XObject/Subtype/Image/Width ${w}/Height ${h}/ColorSpace/DeviceRGB/BitsPerComponent 8/Filter/DCTDecode/Length ${j.length}>>\nstream\n`);add(j);add('\nendstream\nendobj\n');
+  const c=`q ${W} 0 0 ${H} 0 0 cm /Im Do Q`;ob(5,`<</Length ${c.length}>>\nstream\n${c}\nendstream`);const x=len;
+  add('xref\n0 6\n0000000000 65535 f \n'+[1,2,3,4,5].map(n=>String(o[n]).padStart(10,'0')+' 00000 n \n').join('')+`trailer\n<</Size 6/Root 1 0 R>>\nstartxref\n${x}\n%%EOF`);return new Blob(P,{type:'application/pdf'})};
+async function certDl(k,fmt){if(!certOk(k))return toast('Pass every step to unlock your certificate');const cv=await certCanvas(k),nm=cInfo(k).t.replace(/[^\w]+/g,'-').replace(/^-|-$/g,'').toLowerCase(),dl=(b,e)=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='certificate-'+nm+'.'+e;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000)};
+  if(fmt==='png')cv.toBlob(b=>dl(b,'png'));else if(fmt==='jpg')cv.toBlob(b=>dl(b,'jpg'),'image/jpeg',.93);else cv.toBlob(async b=>dl(imgPdf(new Uint8Array(await b.arrayBuffer()),cv.width,cv.height),'pdf'),'image/jpeg',.93);toast('Certificate downloaded')}
+/* restore session */
+(()=>{const U=LS.get('rb_users')||{},em=LS.get('rb_sess'),SE='aarav.mehta@example.com';if(!U[SE]){U[SE]={name:'Aarav Mehta',pw:'Evolve@2026'};LS.set('rb_users',U)}if(em&&U[em])login(em,U[em].name,true)})();
+
+/* ===== intro: logo reveal ===== */
+(()=>{
+  const sp=$('#splash'),img=$('.logo img');if(!sp)return;
+  const L=$('.sp-logo',sp);if(img)L.innerHTML='<img alt="" src="'+img.src+'">';
+  const hdr=$('.header');
+  const quick=reduce;let gone=0;
+  const hide=()=>{if(gone++)return;sp.classList.add('out');document.body.classList.add('ready');setTimeout(()=>sp.remove(),quick?0:700)};
+  sp.addEventListener('click',hide);
+  document.body.classList.add('intro');
+  setTimeout(hide,quick?350:2300);
+})();
+
+/* ===== v6: ratings, footer, info pages, menu ===== */
+const YR=new Date().getFullYear(),BRAND='Intelligence Designed To Evolve';
+const STAR='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z"/></svg>';
+const stars=(n,c='')=>`<span class="stars ${c}" role="img" aria-label="${n} out of 5">${[1,2,3,4,5].map(i=>`<i class="${i<=Math.round(n)?'on':''}">${STAR}</i>`).join('')}</span>`;
+/* SAMPLE DATA: placeholder reviews so the section isn't empty. Replace with real, consented reviews from your backend. */
+const SAMPLE=[
+ {n:'Aarav S.',r:'Junior Developer',s:5,q:'The resume scan flagged exactly the skills I was missing, and the course path filled the gaps.',x:1},
+ {n:'Meera K.',r:'Teacher',s:5,q:'Auto-apply saved me hours every week, so I could focus on interview prep.',x:1},
+ {n:'Rohan P.',r:'Accounts Executive',s:4,q:'Clear steps, a quick certificate, and a mock interview that felt like the real thing.',x:1},
+ {n:'Sneha R.',r:'Nurse',s:5,q:'Easy to use in my own language, and the job matches were relevant to my field.',x:1},
+ {n:'Imran A.',r:'Marketing Associate',s:5,q:'The score gave me a clear target. I updated my resume and my matches went up.',x:1}
+];
+const myRv=()=>LS.get('rb_reviews')||[],allRv=()=>[...myRv(),...SAMPLE];
+const rvStats=()=>{const L=allRv(),n=L.length,d=[0,0,0,0,0,0];L.forEach(x=>d[x.s]++);return{n,avg:n?L.reduce((a,x)=>a+x.s,0)/n:0,d,sample:L.some(x=>x.x)}};
+let rvI=0,rvT,rvSel=0;
+function rvDraw(){
+  const st=rvStats(),mine=myRv().find(x=>x.id===(S.user?S.user.email:'guest'));
+  if(mine&&!rvSel)rvSel=mine.s;
+  $('#reviews').innerHTML=`<div class="panel rv reveal"><div class="rv-txt"><span class="tag">Loved by job seekers</span><div id="rvq" aria-live="polite"></div><div class="rv-dots" id="rvd" role="tablist" aria-label="Choose review"></div></div><div class="rv-vis"><div class="rv-orb" id="rvo"></div><button class="rv-next" id="rvn" aria-label="Next review"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button></div></div>
+  <div class="panel rt reveal"><div class="rt-sum"><div class="rt-big"><b class="rt-n" id="rtavg">${st.avg.toFixed(1)}</b>${stars(st.avg)}<small>${st.n} rating${st.n>1?'s':''}${st.sample?' · includes sample ratings':''}</small></div><div class="rt-bars">${[5,4,3,2,1].map(k=>`<div class="rt-r"><span>${k}</span><div class="bar"><i data-w="${st.n?Math.round(st.d[k]/st.n*100):0}" style="width:0"></i></div><em>${st.n?Math.round(st.d[k]/st.n*100):0}%</em></div>`).join('')}</div></div>
+  <div class="rt-form"><h3>Rate your experience</h3><p class="muted">Your rating helps other job seekers choose with confidence.</p><div class="rt-in" id="rtin" role="radiogroup" aria-label="Your rating">${[1,2,3,4,5].map(i=>`<button type="button" role="radio" aria-checked="false" aria-label="${i} star${i>1?'s':''}" data-r="${i}">${STAR}</button>`).join('')}</div><textarea id="rtt" maxlength="240" placeholder="Tell us what worked (optional)" aria-label="Your feedback">${mine?esc(mine.q||''):''}</textarea><button class="btn sm" id="rts" disabled>${mine?'Update rating':'Submit rating'}</button></div></div>`;
+  rvShow(rvI,1);
+  const dots=$('#rvd'),n=allRv().length;dots.innerHTML=Array.from({length:n},(_,i)=>`<button role="tab" aria-label="Review ${i+1}" data-d="${i}"></button>`).join('');rvDots();
+  $('#rvn').onclick=()=>{rvShow(rvI+1);rvAuto()};
+  dots.onclick=e=>{const b=e.target.closest('[data-d]');if(b){rvShow(+b.dataset.d);rvAuto()}};
+  const stars$=$$('#rtin button'),paint=n=>stars$.forEach((b,i)=>{b.classList.toggle('on',i<n);b.setAttribute('aria-checked',i+1===rvSel)});
+  stars$.forEach(b=>{b.onmouseenter=()=>paint(+b.dataset.r);b.onfocus=()=>paint(+b.dataset.r);b.onclick=()=>{rvSel=+b.dataset.r;paint(rvSel);$('#rts').disabled=false;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}});
+  $('#rtin').onmouseleave=()=>paint(rvSel);paint(rvSel);$('#rts').disabled=!rvSel;
+  $('#rts').onclick=()=>{if(!rvSel)return;const id=S.user?S.user.email:'guest',L=myRv().filter(x=>x.id!==id);L.unshift({id,n:S.user?S.user.name:'You',r:'Your review',s:rvSel,q:($('#rtt').value||'').trim()});LS.set('rb_reviews',L);rvI=0;toast('Thanks for rating us');burst();rvDraw();const o=$('#rtavg');o&&(o.closest('.panel').classList.add('sc-hl'))};
+  fillBars('#reviews');revealInit();
+}
+function rvShow(i,first){
+  const L=allRv();if(!L.length)return;rvI=(i+L.length)%L.length;const it=L[rvI],q=$('#rvq'),o=$('#rvo');if(!q||!o)return;
+  const html=`<h2 class="h2 qt">“${esc(it.q||'Rated '+it.s+' out of 5.')}”</h2><p class="rv-by"><b>${esc(it.n)}</b> · ${esc(it.r)}${it.x?' <em class="chip">Sample review</em>':''}</p>`;
+  const orb=`<span class="o-ring"></span><span class="o-av">${esc(it.n.trim()[0]||'U').toUpperCase()}</span><b class="o-sc">${it.s}.0</b>${stars(it.s)}`;
+  if(first||reduce){q.innerHTML=html;o.innerHTML=orb}else{q.classList.add('out');o.classList.add('out');setTimeout(()=>{q.innerHTML=html;o.innerHTML=orb;q.classList.remove('out');o.classList.remove('out');q.classList.add('in');o.classList.add('in');setTimeout(()=>{q.classList.remove('in');o.classList.remove('in')},500)},220)}
+  rvDots();
+}
+const rvDots=()=>$$('#rvd button').forEach((b,i)=>b.classList.toggle('on',i===rvI));
+function rvAuto(){clearInterval(rvT);if(reduce)return;rvT=setInterval(()=>{if(document.hidden||cur!=='home'||!$('#rvq'))return;const r=$('#reviews').getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0)rvShow(rvI+1)},6500)}
+function revealInit(){
+  const root=$('#v-home'),els=$$('#v-home .reveal:not(.shown)');
+  if(!('IntersectionObserver' in window)||reduce){els.forEach(e=>e.classList.add('shown'));return}
+  const o=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('shown');o.unobserve(x.target)}}),{root,threshold:.12});els.forEach(e=>o.observe(e));
+}
+/* info pages */
+const INFO={
+ about:['About','Intelligence Designed To Evolve','We help job seekers in every field. Our AI bot scans your resume, scores it, matches real roles, applies for you and stays with you with upskilling courses until you’re hired.'],
+ privacy:['Privacy Policy','How your data is handled','In this version of the app, your account, resume details, progress and ratings are stored only in your own browser. Nothing is sent to a server. Clearing your browser data removes them.'],
+ terms:['User Agreement','Using the platform','Use the platform honestly and only with information that is yours to share. Course certificates and job matches are provided for guidance and do not guarantee employment.'],
+ cookies:['Cookie Policy','Cookies and storage','We use your browser’s local storage to remember your session, language and progress. We do not use advertising cookies in this version.'],
+ help:['Help Center','How it works','1. Create a free account.\n2. Upload your resume in Resume Bot.\n3. Review matched jobs or let Auto-Pilot apply.\n4. Take courses to close skill gaps and earn certificates.\nStill stuck? Ask Evo, the assistant in the bottom corner.'],
+ contact:['Contact','We’d love to hear from you','The quickest way to reach us is Evo, the career assistant in the bottom corner. You can also leave a rating with feedback in the Ratings section.'],
+ access:['Accessibility','Built for everyone','The app supports keyboard navigation, visible focus, screen-reader labels, reduced-motion preferences and menus in English, Hindi, Tamil and Kannada.']
+};
+INFO.accessibility=INFO.access;
+function info(k){const x=INFO[k];if(!x)return;mdl(`<p class="muted">${x[0]}</p><h2 class="h2">${x[1]}</h2><p class="muted" style="white-space:pre-line;margin-top:8px">${x[2]}</p><div class="seg"><button class="on" data-mc>Close</button></div>`)}
+function toReviews(){closeMenu();const go2=()=>{const r=$('#reviews');r&&r.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})};if(cur!=='home'){go('home');setTimeout(go2,60)}else go2()}
+document.addEventListener('click',e=>{
+  const i=e.target.closest('[data-i]');if(i){e.preventDefault();closeMenu();return info(i.dataset.i)}
+  const c=e.target.closest('[data-sc]');if(c){e.preventDefault();return toReviews()}
+  const f=e.target.closest('[data-fgo]');if(f){e.preventDefault();return f.dataset.fgo==='evo'?($('#cbf')&&$('#cbf').click()):go(f.dataset.fgo)}
+});
+/* footer */
+const fbarHTML=()=>`<div class="fb"><span class="fb-l"><span class="fb-logo"></span><span>© ${YR} ${BRAND}. All rights reserved.</span></span><nav class="fb-n" aria-label="Legal"><button data-i="accessibility">Accessibility</button><button data-i="terms">User Agreement</button><button data-i="privacy">Privacy Policy</button><button data-i="cookies">Cookie Policy</button></nav><select class="lang" aria-label="Language"><option value="en">English</option><option value="hi">हिंदी</option><option value="ta">தமிழ்</option><option value="kn">ಕನ್ನಡ</option></select></div>`;
+function footInit(){
+  const img=$('.logo img'),logo=img?`<img alt="" src="${img.src}">`:'';
+  $('#ft').innerHTML=`<div class="ft-g"><div class="ft-b"><span class="ft-logo">${logo}</span><b>${BRAND}</b><p>AI that scans your resume, matches real jobs and stays with you until you’re hired.</p></div>
+  <div><h4>Product</h4><button data-fgo="bot">Resume Bot</button><button data-fgo="jobs">Jobs</button><button data-fgo="courses">Courses</button><button data-fgo="learn">My learning</button></div>
+  <div><h4>Resources</h4><button data-i="help">How it works</button><button data-sc="reviews">Rate us</button><button data-fgo="settings">Settings</button><button data-fgo="evo">Ask Evo</button></div>
+  <div><h4>Company</h4><button data-i="about">About</button><button data-i="contact">Contact</button><button data-i="accessibility">Accessibility</button></div>
+  <div><h4>Legal</h4><button data-i="terms">User Agreement</button><button data-i="privacy">Privacy Policy</button><button data-i="cookies">Cookie Policy</button></div></div>${fbarHTML()}`;
+  $$('.fb-logo').forEach(e=>e.innerHTML=logo);
+  $('#mcopy').textContent='© '+YR+' '+BRAND;
+  applyLang();
+}
+footInit();rvDraw();rvAuto();
+</script>
+</body>
+</html>
